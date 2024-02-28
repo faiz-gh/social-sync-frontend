@@ -87,6 +87,7 @@ export type FeedbackType = {
   is_deleted?: boolean;
 }
 
+/** Response Interfaces */
 export type DefaultResponseType = {
   message: string;
   debugInfo?: string;
@@ -94,7 +95,7 @@ export type DefaultResponseType = {
   error?: string;
 }
 
-/** Auth Response */
+// Auth Response
 export interface IRegisterResponse extends Response {
   data: DefaultResponseType & {
     data?: UserType;
@@ -138,7 +139,7 @@ export interface IRemoveUserResponse extends Response {
   };
 }
 
-/** Employee Response */
+// Employee Response
 export interface ICreateEmployeeResponse extends Response {
   data: DefaultResponseType & {
     data?: UserType;
@@ -163,7 +164,7 @@ export interface IGetEmployeesByCompanyResponse extends Response {
   };
 }
 
-/** Client Response */
+// Client Response
 export interface ICreateClientResponse extends Response {
   data: DefaultResponseType & {
     data?: ClientType;
@@ -200,7 +201,7 @@ export interface IGetClientsByEmployeeResponse extends Response {
   };
 }
 
-/** Account Response */
+// Account Response
 export interface ICreateAccountResponse extends Response {
   data: DefaultResponseType & {
     data?: AccountType;
@@ -231,7 +232,7 @@ export interface IGetAccountsByClientResponse extends Response {
   };
 }
 
-/** Post Response */
+// Post Response
 export interface ICreatePostResponse extends Response {
   data: DefaultResponseType & {
     data?: {
@@ -259,7 +260,7 @@ export interface IGetPostsByClientResponse extends Response {
   };
 }
 
-/** Event Response */
+// Event Response
 export interface ICreateEventResponse extends Response {
   data: DefaultResponseType & {
     data?: EventType;
@@ -288,4 +289,209 @@ export interface IGetEventsByCompanyResponse extends Response {
   data: DefaultResponseType & {
     data?: EventType[];
   };
+}
+
+/** Request Interfaces */
+
+// Auth Service
+export interface IRegisterRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  roleId: number;
+}
+
+export interface ILoginRequest {
+  email: string;
+}
+
+export interface IVerifyOtpRequest {
+  email: string;
+  code: string;
+  session: string;
+}
+
+export interface IRefreshTokenRequest {
+  awsUserId: string;
+  refreshToken: string;
+}
+
+export interface ILogoutRequest {
+  accessToken: string;
+}
+
+export interface IRemoveUserRequest {
+  email: string;
+  accessToken: string;
+}
+
+// Employee Service
+export interface ICreateEmployeeRequest {
+  companyId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+export interface IUpdateEmployeeRequest {
+  id: string;
+  firstName: string;
+  lastName: string;
+  roleId: number;
+}
+
+export interface IGetEmployeesByCompanyRequest {
+  companyId: string;
+}
+
+export interface IGetEmployeeRequest {
+  id: string;
+}
+
+// Client Service
+export interface ICreateClientRequest {
+  companyId: string;
+  employeeId: string;
+  name: string;
+  email: string;
+}
+
+export interface IUpdateClientRequest {
+  id: string;
+  employeeId: string;
+  name: string;
+  email: string;
+}
+
+export interface IDeleteClientRequest {
+  id: string;
+}
+
+export interface IGetClientRequest {
+  id: string;
+}
+
+export interface IGetClientsByCompanyRequest {
+  companyId: string;
+}
+
+export interface IGetClientsByEmployeeRequest {
+  employeeId: string;
+}
+
+// Account Service
+export interface ICreateAccountRequest {
+  clientId: string;
+  accountType: string;
+  accessToken: string;
+}
+
+export interface IUpdateAccountRequest {
+  id: string;
+  accountType: string;
+  accessToken: string;
+}
+
+export interface IDeleteAccountRequest {
+  id: string;
+}
+
+export interface IGetAccountRequest {
+  id: string;
+}
+
+export interface IGetAccountsByClientRequest {
+  clientId: string;
+}
+
+// Post Service
+export interface ICreatePostRequest {
+  accountId: string;
+  media?: string[];
+  location?: string;
+  description: string;
+  tags?: string[];
+  postSchedule?: Date;
+}
+
+export interface IUpdatePostRequest {
+  id: string;
+  media: string[];
+  location: string;
+  description: string;
+  tags: string[];
+  postSchedule: Date;
+}
+
+export interface IDeletePostRequest {
+  id: string;
+}
+
+export interface IGetPostRequest {
+  id: string;
+}
+
+export interface IGetPostsByAccountRequest {
+  accountId: string;
+}
+
+export interface IGetPostsByClientRequest {
+  clientId: string;
+}
+
+// Event Service
+export interface ICreateEventRequest {
+  companyId: string;
+  title: string;
+  description: string;
+  location: string;
+  startDate: Date;
+  endDate: Date;
+}
+
+export interface IUpdateEventRequest {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  startDate: Date;
+  endDate: Date;
+}
+
+export interface IDeleteEventRequest {
+  id: string;
+}
+
+export interface IGetEventRequest {
+  id: string;
+}
+
+export interface IGetEventsByCompanyRequest {
+  companyId: string;
+}
+
+// Feedback Service
+export interface ICreateFeedbackRequest {
+  userId: string;
+  subject: string;
+  description: string;
+}
+
+export interface IUpdateFeedbackRequest {
+  id: string;
+  subject: string;
+  description: string;
+  isOpened?: boolean;
+}
+
+export interface IDeleteFeedbackRequest {
+  id: string;
+}
+
+export interface IGetFeedbackRequest {
+  id: string;
+}
+
+export interface IGetFeedbacksByUserRequest {
+  userId: string;
 }
