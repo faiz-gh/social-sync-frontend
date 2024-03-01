@@ -2,13 +2,10 @@ import PageHeader from '@/app/shared/page-header';
 import { routes } from '@/config/routes';
 import { metaObject } from '@/config/site.config';
 import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
-import { invoiceData } from '@/data/invoice-data';
 import ExportButton from '@/app/shared/export-button';
-import ImportButton from '@/app/shared/import-button';
 import { getColumns } from '../columns';
 import ModalButton from '@/app/shared/modal-button';
 import AccountForm from '../add-account-form';
-import { useRouter } from 'next/router';
 
 export const metadata = {
   ...metaObject('Clients'),
@@ -136,7 +133,7 @@ export default function AccountsPage({ params }: { params: { clientId: string } 
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <ExportButton data={invoiceData} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
+          <ExportButton data={clientData} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
           <ModalButton
             label={params.clientId}
             view={<AccountForm />}

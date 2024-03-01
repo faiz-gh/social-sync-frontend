@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios";
+
 /** Standard Types */
 export type UserType = {
   id?: string;
@@ -96,19 +98,19 @@ export type DefaultResponseType = {
 }
 
 // Auth Response
-export interface IRegisterResponse extends Response {
+export interface IRegisterResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: UserType;
   };
 }
 
-export interface ILoginResponse extends Response {
+export interface ILoginResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: LoginResponseType;
   };
 }
 
-export interface IVerifyOtpResponse extends Response {
+export interface IVerifyOtpResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: UserType & {
       accessToken: string,
@@ -118,7 +120,7 @@ export interface IVerifyOtpResponse extends Response {
   };
 }
 
-export interface IRefreshTokenResponse extends Response {
+export interface IRefreshTokenResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: {
       accessToken: string,
@@ -127,113 +129,113 @@ export interface IRefreshTokenResponse extends Response {
   };
 }
 
-export interface ILogoutResponse extends Response {
+export interface ILogoutResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: null;
   };
 }
 
-export interface IRemoveUserResponse extends Response {
+export interface IRemoveUserResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: null;
   };
 }
 
 // Employee Response
-export interface ICreateEmployeeResponse extends Response {
+export interface ICreateEmployeeResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: UserType;
   };
 }
 
-export interface IUpdateEmployeeResponse extends Response {
+export interface IUpdateEmployeeResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: UserType;
   };
 }
 
-export interface IGetEmployeeResponse extends Response {
+export interface IGetEmployeeResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: UserType;
   };
 }
 
-export interface IGetEmployeesByCompanyResponse extends Response {
+export interface IGetEmployeesByCompanyResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: UserType[];
   };
 }
 
 // Client Response
-export interface ICreateClientResponse extends Response {
+export interface ICreateClientResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: ClientType;
   };
 }
 
-export interface IUpdateClientResponse extends Response {
+export interface IUpdateClientResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: ClientType;
   };
 }
 
-export interface IRemoveClientResponse extends Response {
+export interface IRemoveClientResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: ClientType;
   };
 }
 
-export interface IGetClientResponse extends Response {
+export interface IGetClientResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: ClientType;
   };
 }
 
-export interface IGetClientsByCompanyResponse extends Response {
+export interface IGetClientsByCompanyResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: ClientType[];
   };
 }
 
-export interface IGetClientsByEmployeeResponse extends Response {
+export interface IGetClientsByEmployeeResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: ClientType[];
   };
 }
 
 // Account Response
-export interface ICreateAccountResponse extends Response {
+export interface ICreateAccountResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: AccountType;
   };
 }
 
-export interface IUpdateAccountResponse extends Response {
+export interface IUpdateAccountResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: AccountType;
   };
 }
 
-export interface IRemoveAccountResponse extends Response {
+export interface IRemoveAccountResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: AccountType;
   };
 }
 
-export interface IGetAccountResponse extends Response {
+export interface IGetAccountResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: AccountType;
   };
 }
 
-export interface IGetAccountsByClientResponse extends Response {
+export interface IGetAccountsByClientResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: AccountType[];
   };
 }
 
 // Post Response
-export interface ICreatePostResponse extends Response {
+export interface ICreatePostResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: {
       post: PostType,
@@ -242,50 +244,50 @@ export interface ICreatePostResponse extends Response {
   };
 }
 
-export interface IGetPostResponse extends Response {
+export interface IGetPostResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: PostType;
   };
 }
 
-export interface IGetPostsByAccountResponse extends Response {
+export interface IGetPostsByAccountResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: PostType[];
   };
 }
 
-export interface IGetPostsByClientResponse extends Response {
+export interface IGetPostsByClientResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: PostType[];
   };
 }
 
 // Event Response
-export interface ICreateEventResponse extends Response {
+export interface ICreateEventResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: EventType;
   };
 }
 
-export interface IUpdateEventResponse extends Response {
+export interface IUpdateEventResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: EventType;
   };
 }
 
-export interface IDeleteEventResponse extends Response {
+export interface IDeleteEventResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: EventType;
   };
 }
 
-export interface IGetEventResponse extends Response {
+export interface IGetEventResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: EventType;
   };
 }
 
-export interface IGetEventsByCompanyResponse extends Response {
+export interface IGetEventsByCompanyResponse extends AxiosResponse {
   data: DefaultResponseType & {
     data?: EventType[];
   };
@@ -298,7 +300,7 @@ export interface IRegisterRequest {
   firstName: string;
   lastName: string;
   email: string;
-  roleId: number;
+  roleId: string;
 }
 
 export interface ILoginRequest {
@@ -337,7 +339,7 @@ export interface IUpdateEmployeeRequest {
   id: string;
   firstName: string;
   lastName: string;
-  roleId: number;
+  roleId: string;
 }
 
 export interface IGetEmployeesByCompanyRequest {
@@ -494,4 +496,8 @@ export interface IGetFeedbackRequest {
 
 export interface IGetFeedbacksByUserRequest {
   userId: string;
+}
+
+export interface IQueryParams {
+  [key: string]: string
 }

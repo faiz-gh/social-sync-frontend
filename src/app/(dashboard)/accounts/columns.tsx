@@ -9,9 +9,10 @@ import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
 import AccountForm from './add-account-form';
 import ModalLink from '@/app/shared/modal-link';
+import { AccountType } from '@/types';
 
 type Columns = {
-  data: any[];
+  data: AccountType[];
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];

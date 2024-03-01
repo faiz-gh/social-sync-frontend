@@ -2,24 +2,36 @@
 
 import Link from 'next/link';
 import { SubmitHandler } from 'react-hook-form';
-import { Password, Checkbox, Button, Input, Text } from 'rizzui';
+import { Button, Input, Text } from 'rizzui';
 import { useMedia } from '@/hooks/use-media';
 import { Form } from '@/components/ui/form';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 import { useRouter } from 'next/navigation';
+import { ILoginRequest, ILoginResponse } from '@/types';
+import Cookies from 'js-cookie';
+import { login } from '@/lib/apiRequests/auth';
 
 const initialValues: LoginSchema = {
   email: '',
-  password: '',
 };
 
 export default function SignInForm() {
   const router = useRouter();
   const isMedium = useMedia('(max-width: 1200px)', false);
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    router.push(routes.auth.verifyOtp + '?email=' + data.email);
+    let payload: ILoginRequest = {
+      email: data.email,
+    };
+
+    const response: ILoginResponse = await login(payload);
+
+    if (response.statusText === 'OK' && response.data.data) {
+      Cookies.set('email', data.email);
+      Cookies.set('token', response.data.data.Session);
+      localStorage.setItem('token', response.data.data.Session);
+      router.push(routes.auth.verifyOtp);
+    }
   };
 
   return (
@@ -42,14 +54,6 @@ export default function SignInForm() {
               className="[&>label>span]:font-medium"
               {...register('email')}
               error={errors.email?.message}
-            />
-            <Password
-              label="Password"
-              placeholder="Enter your password"
-              size={isMedium ? 'lg' : 'xl'}
-              className="[&>label>span]:font-medium"
-              {...register('password')}
-              error={errors.password?.message}
             />
             <Button
               className="w-full"

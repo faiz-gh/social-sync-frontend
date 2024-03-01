@@ -3,13 +3,19 @@
 import { PinCode, Button } from 'rizzui';
 import { Form } from '@/components/ui/form';
 import { SubmitHandler } from 'react-hook-form';
+import { signIn } from 'next-auth/react';
 
 type FormValues = {
   otp: string;
 };
 
-export default function OtpForm() {
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+type OtpFormProps = {
+  email: string;
+  sessionToken: string;
+};
+
+export default function OtpForm({ email, sessionToken }: OtpFormProps) {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
   };
   return (

@@ -9,9 +9,10 @@ import DeletePopover from '@/app/shared/delete-popover';
 import ClientForm from './add-client-form';
 import ModalLink from '@/app/shared/modal-link';
 import { PiUserCircleGear, PiUserList } from 'react-icons/pi';
+import { ClientType, IGetClientsByCompanyResponse } from '@/types';
 
 type Columns = {
-  data: any[];
+  data: ClientType[];
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];

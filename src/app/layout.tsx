@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "Social Sync is a social media management tool that helps you manage your social media accounts in one place.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -3,25 +3,41 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { Password, Button, Input, Text } from 'rizzui';
+import { Button, Input, Text } from 'rizzui';
 import { useMedia } from '@/hooks/use-media';
 import { Form } from '@/components/ui/form';
 import { routes } from '@/config/routes';
 import { SignUpSchema, signUpSchema } from '@/utils/validators/signup.schema';
+import { IRegisterRequest, IRegisterResponse } from '@/types';
+import { USER_ROLE } from '@/config/enums';
+import { useRouter } from 'next/navigation';
+import { register } from '@/lib/apiRequests/auth';
+import toast from 'react-hot-toast';
 
 const initialValues = {
   firstName: '',
   lastName: '',
   email: '',
-  password: '',
-  confirmPassword: '',
 };
 
 export default function SignUpForm() {
+  const router = useRouter();
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
   const onSubmit: SubmitHandler<SignUpSchema> = async (data) => {
-    console.log(data);
+    const payload: IRegisterRequest = {
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      roleId: USER_ROLE.COMPANY,
+    }
+
+    const response: IRegisterResponse = await register(payload);
+
+    if (response.statusText === 'OK' && response.data.data) {
+      toast.success('Account created successfully');
+      router.push(routes.auth.signIn);
+    }
   };
 
   return (
@@ -63,22 +79,6 @@ export default function SignUpForm() {
               {...register('email')}
               error={errors.email?.message}
             />
-            <Password
-              label="Password"
-              placeholder="Enter your password"
-              size={isMedium ? 'lg' : 'xl'}
-              {...register('password')}
-              className="col-span-2 [&>label>span]:font-medium"
-              error={errors.password?.message}
-            />
-            <Password
-              label="Confirm Password"
-              placeholder="Enter your password again"
-              size={isMedium ? 'lg' : 'xl'}
-              {...register('confirmPassword')}
-              className="col-span-2 [&>label>span]:font-medium"
-              error={errors.confirmPassword?.message}
-            />
             <Button
               className="col-span-2 w-full"
               type="submit"
@@ -92,7 +92,7 @@ export default function SignUpForm() {
       <Text className="mt-6 text-center text-[15px] leading-loose text-gray-500 md:mt-7 lg:mt-9 lg:text-base">
         Don’t have an account?{' '}
         <Link
-          href={routes.sidebar.dashboard}
+          href={routes.auth.signIn}
           className="font-semibold text-gray-700 transition-colors hover:text-primary"
         >
           Sign In

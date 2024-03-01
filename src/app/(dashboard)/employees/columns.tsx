@@ -9,9 +9,10 @@ import DeletePopover from '@/app/shared/delete-popover';
 import EmployeeForm from './add-employee-form';
 import ModalLink from '@/app/shared/modal-link';
 import { PiUserList } from 'react-icons/pi';
+import { UserType } from '@/types';
 
 type Columns = {
-  data: any[];
+  data: UserType[];
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];

@@ -3,7 +3,7 @@ export enum LAYOUT_OPTIONS {
 }
 
 export enum USER_ROLE {
-  ADMIN = 1,
-  COMPANY = 2,
-  EMPLOYEE = 3
+  ADMIN = "1",
+  COMPANY = "2",
+  EMPLOYEE = "3"
 }
