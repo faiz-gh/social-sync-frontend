@@ -1,4 +1,4 @@
-import AuthWrapper from '../shared/auth-layout/auth-wrapper';
+import AuthWrapper from '../../shared/auth-layout/auth-wrapper';
 import SignUpForm from './sign-up-form';
 import { metaObject } from '@/config/site.config';
 

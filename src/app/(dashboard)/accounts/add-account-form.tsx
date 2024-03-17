@@ -7,7 +7,7 @@ import cn from '@/utils/class-names';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
 import toast from 'react-hot-toast';
-import useClient from '@/hooks/use-client';
+// import useClient from '@/hooks/use-client';
 import { Client } from './[clientId]/page';
 
 interface ClientFormInput {
@@ -19,7 +19,7 @@ interface ClientFormInput {
 
 export default function Account(client: Client) {
     const { closeModal } = useModal();
-    const { createClient, updateClient } = useClient();
+    // const { createClient, updateClient } = useClient();
 
     const isUpdateClient = client !== undefined;
 
@@ -39,9 +39,9 @@ export default function Account(client: Client) {
         );
 
         if (isNewClient) {
-            createClient(client);
+            // createClient(client);
         } else {
-            updateClient(client);
+            // updateClient(client);
         }
         closeModal();
     };

@@ -1,9 +1,12 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
+import axios from "@/lib/axios";
 
 import { ICreateAccountRequest, IUpdateAccountRequest, IDeleteAccountRequest, IGetAccountRequest, IGetAccountsByClientRequest, IQueryParams } from "@/types";
 
 export async function createAccount(payload: ICreateAccountRequest): Promise<AxiosResponse> {
-    return await axios.post('http://localhost:5500/account', payload);
+    return await axios.post('/account', payload, {
+        validateStatus: () => true
+    });
 }
 
 export async function updateAccount(payload: IUpdateAccountRequest): Promise<AxiosResponse> {
@@ -12,17 +15,25 @@ export async function updateAccount(payload: IUpdateAccountRequest): Promise<Axi
         accountType: payload.accountType,
         accessToken: payload.accessToken
     }
-    return await axios.put('http://localhost:5500/account?' + new URLSearchParams(queryParams));
+    return await axios.put('/account?' + new URLSearchParams(queryParams), {}, {
+        validateStatus: () => true
+    });
 }
 
 export async function removeAccount(payload: IDeleteAccountRequest): Promise<AxiosResponse> {
-    return await axios.delete('http://localhost:5500/account/' + payload.id);
+    return await axios.delete('/account/' + payload.id, {
+        validateStatus: () => true
+    });
 }
 
 export async function getAccount(payload: IGetAccountRequest): Promise<AxiosResponse> {
-    return await axios.get('http://localhost:5500/account/' + payload.id);
+    return await axios.get('/account/' + payload.id, {
+        validateStatus: () => true
+    });
 }
 
 export async function getAccountsByClient(payload: IGetAccountsByClientRequest): Promise<AxiosResponse> {
-    return await axios.get('http://localhost:5500/account/client/' + payload.clientId);
+    return await axios.get('/account/client/' + payload.clientId, {
+        validateStatus: () => true
+    });
 }

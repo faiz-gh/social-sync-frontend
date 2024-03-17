@@ -4,6 +4,11 @@ import { PinCode, Button } from 'rizzui';
 import { Form } from '@/components/ui/form';
 import { SubmitHandler } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
+import {IVerifyOtpRequest, IVerifyOtpResponse} from "@/types";
+import {verifyOtp} from "@/lib/apiRequests/auth";
+import {useRouter} from "next/navigation";
+import {routes} from "@/config/routes";
+import toast from "react-hot-toast";
 
 type FormValues = {
   otp: string;
@@ -15,8 +20,22 @@ type OtpFormProps = {
 };
 
 export default function OtpForm({ email, sessionToken }: OtpFormProps) {
+  const router = useRouter()
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
+    const payload: IVerifyOtpRequest = {
+      email: email,
+      code: data.otp,
+      session: sessionToken,
+    };
+    const response: IVerifyOtpResponse = await verifyOtp(payload);
+
+    if (response.statusText === 'OK' && response.data.data) {
+      localStorage.setItem('user', JSON.stringify(response.data.data));
+      toast.success(response.data.message);
+      router.push(routes.sidebar.dashboard);
+    } else {
+      toast.error(response.data.message);
+    }
   };
   return (
     <Form<FormValues> onSubmit={onSubmit}>

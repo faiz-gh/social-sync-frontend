@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Title, Button } from 'rizzui';
 import { PiHouseLineBold } from 'react-icons/pi';
 import { siteConfig } from '@/config/site.config';
+// @ts-ignore
 import NotFoundImg from '@public/not-found.png';
 
 export default function NotFound() {

@@ -1,15 +1,13 @@
 'use client';
 
-import uniqueId from 'lodash/uniqueId';
 import { PiXBold } from 'react-icons/pi';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { ActionIcon, Button, Input, Text, Textarea, Title } from 'rizzui';
 import cn from '@/utils/class-names';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
-import toast from 'react-hot-toast';
 import { DatePicker } from '@/components/ui/datepicker';
-import { CalendarEvent } from '@/types';
+import { EventType } from '@/types';
 import useEventCalendar from '@/hooks/use-event-calendar';
 import {
   EventFormInput,
@@ -19,7 +17,7 @@ import {
 interface CreateEventProps {
   startDate?: Date;
   endDate?: Date;
-  event?: CalendarEvent;
+  event?: EventType;
 }
 
 export default function EventForm({
@@ -28,36 +26,28 @@ export default function EventForm({
   event,
 }: CreateEventProps) {
   const { closeModal } = useModal();
-  const { createEvent, updateEvent } = useEventCalendar();
+  const { createEvent, updateEvent, fetchEvents } = useEventCalendar();
 
   const isUpdateEvent = event !== undefined;
 
-  const onSubmit: SubmitHandler<EventFormInput> = (data) => {
+  const onSubmit: SubmitHandler<EventFormInput> = async (data) => {
     const isNewEvent = data.id === '' || data.id === undefined;
-
-    console.log('event_data', data);
-
-    toast.success(
-      <Text as="b">
-        Event {isNewEvent ? 'Created' : 'Updated'} Successfully
-      </Text>
-    );
 
     if (isNewEvent) {
       createEvent({
-        id: uniqueId(),
-        start: data.startDate ?? startDate,
-        end: data.endDate ?? endDate,
+        start_date: data.startDate,
+        end_date: data.endDate,
         title: data.title,
         description: data.description,
       });
     } else {
       updateEvent({
         ...data,
-        start: data.startDate,
-        end: data.endDate,
+        start_date: data.startDate,
+        end_date: data.endDate,
       });
     }
+    await fetchEvents();
     closeModal();
   };
 
@@ -85,8 +75,8 @@ export default function EventForm({
             title: event?.title ?? '',
             description: event?.description ?? '',
             location: event?.location ?? '',
-            startDate: startDate ?? event?.start,
-            endDate: endDate ?? event?.end,
+            startDate: startDate ?? event?.start_date,
+            endDate: endDate ?? event?.end_date,
           },
         }}
         className="grid grid-cols-1 gap-5 @container md:grid-cols-2 [&_label]:font-medium"

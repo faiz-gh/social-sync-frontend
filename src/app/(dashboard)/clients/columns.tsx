@@ -6,10 +6,11 @@ import { HeaderCell } from '@/components/ui/table';
 import PencilIcon from '@/components/icons/pencil';
 import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
-import ClientForm from './add-client-form';
+import AddClientForm from './add-client-form';
 import ModalLink from '@/app/shared/modal-link';
 import { PiUserCircleGear, PiUserList } from 'react-icons/pi';
 import { ClientType, IGetClientsByCompanyResponse } from '@/types';
+import UpdateClientForm from "@/app/(dashboard)/clients/update-client-form";
 
 type Columns = {
   data: ClientType[];
@@ -70,10 +71,10 @@ export const getColumns = ({
     },
     {
       title: <HeaderCell title="Employee Id" />,
-      dataIndex: 'employeeId',
-      key: 'employeeId',
+      dataIndex: 'employee_id',
+      key: 'employee_id',
       width: 250,
-      render: (employeeId: string) => employeeId.toString(),
+      render: (employee_id: string) => employee_id.toString(),
     },
     {
       title: (
@@ -81,17 +82,17 @@ export const getColumns = ({
           title="Total Accounts"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'totalAccounts'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'total_accounts'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('totalAccounts'),
-      dataIndex: 'totalAccounts',
-      key: 'totalAccounts',
+      onHeaderCell: () => onHeaderCellClick('total_accounts'),
+      dataIndex: 'total_accounts',
+      key: 'total_accounts',
       width: 200,
-      render: (totalAccounts: string) => (
+      render: (total_accounts: string) => (
         <Text className="font-medium text-gray-700 dark:text-gray-600">
-          {totalAccounts}
+          {total_accounts}
         </Text>
       ),
     },
@@ -101,15 +102,15 @@ export const getColumns = ({
           title="Created At"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'createdDate'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'created_date'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('createdDate'),
-      dataIndex: 'createdDate',
-      key: 'createdDate',
+      onHeaderCell: () => onHeaderCellClick('created_date'),
+      dataIndex: 'created_date',
+      key: 'created_date',
       width: 200,
-      render: (createdDate: Date) => <DateCell date={createdDate} />,
+      render: (created_date: Date) => <DateCell date={created_date} />,
     },
     {
       title: <></>,
@@ -125,7 +126,7 @@ export const getColumns = ({
             color="invert"
           >
             <ModalLink
-              view={<ClientForm />}
+              view={<UpdateClientForm client={row} />}
               customSize="900px"
             >
               <ActionIcon
@@ -144,7 +145,7 @@ export const getColumns = ({
             placement="top"
             color="invert"
           >
-            <Link href={`/posts`}>
+            <Link href={`/accounts/${row.id}`}>
               <ActionIcon
                 as="span"
                 size="sm"

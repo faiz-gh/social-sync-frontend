@@ -6,10 +6,10 @@ import { HeaderCell } from '@/components/ui/table';
 import PencilIcon from '@/components/icons/pencil';
 import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
-import EmployeeForm from './add-employee-form';
 import ModalLink from '@/app/shared/modal-link';
 import { PiUserList } from 'react-icons/pi';
 import { UserType } from '@/types';
+import UpdateEmployeeForm from "@/app/(dashboard)/employees/update-employee-form";
 
 type Columns = {
   data: UserType[];
@@ -56,17 +56,17 @@ export const getColumns = ({
     },
     {
       title: <HeaderCell title="First Name" />,
-      dataIndex: 'firstName',
-      key: 'firstName',
+      dataIndex: 'first_name',
+      key: 'first_name',
       width: 250,
-      render: (firstName: string) => firstName.toString(),
+      render: (first_name: string) => first_name.toString(),
     },
     {
       title: <HeaderCell title="Last Name" />,
-      dataIndex: 'lastName',
-      key: 'lastName',
+      dataIndex: 'last_name',
+      key: 'last_name',
       width: 250,
-      render: (lastName: string) => lastName.toString(),
+      render: (last_name: string) => last_name.toString(),
     },
     {
       title: <HeaderCell title="Email" />,
@@ -81,17 +81,17 @@ export const getColumns = ({
           title="Total Clients"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'totalClients'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'total_clients'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('totalClients'),
-      dataIndex: 'totalClients',
-      key: 'totalClients',
+      onHeaderCell: () => onHeaderCellClick('total_clients'),
+      dataIndex: 'total_clients',
+      key: 'total_clients',
       width: 200,
-      render: (totalClients: string) => (
+      render: (total_clients: string) => (
         <Text className="font-medium text-gray-700 dark:text-gray-600">
-          {totalClients}
+          {total_clients}
         </Text>
       ),
     },
@@ -101,15 +101,15 @@ export const getColumns = ({
           title="Created At"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'createdDate'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'created_date'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('createdDate'),
-      dataIndex: 'createdDate',
-      key: 'createdDate',
+      onHeaderCell: () => onHeaderCellClick('created_date'),
+      dataIndex: 'created_date',
+      key: 'created_date',
       width: 200,
-      render: (createdDate: Date) => <DateCell date={createdDate} />,
+      render: (created_date: Date) => <DateCell date={created_date} />,
     },
     {
       title: <></>,
@@ -125,7 +125,7 @@ export const getColumns = ({
             color="invert"
           >
             <ModalLink
-              view={<EmployeeForm />}
+              view={<UpdateEmployeeForm employee={row} />}
               customSize="900px"
             >
               <ActionIcon

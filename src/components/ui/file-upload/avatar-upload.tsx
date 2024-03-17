@@ -5,8 +5,7 @@ import toast from 'react-hot-toast';
 import { useCallback, useState } from 'react';
 import { useDropzone } from '@uploadthing/react/hooks';
 import {
-  UploadFileResponse,
-  generateClientDropzoneAccept,
+  generateClientDropzoneAccept
 } from 'uploadthing/client';
 import { useUploadThing } from '@/utils/uploadthing';
 import UploadIcon from '@/components/shape/upload';
@@ -38,7 +37,7 @@ export default function AvatarUpload({
   const { startUpload, permittedFileInfo, isUploading } = useUploadThing(
     'avatar',
     {
-      onClientUploadComplete: (res: UploadFileResponse<any>[] | undefined) => {
+      onClientUploadComplete: (res: any[] | undefined) => {
         if (setValue) {
           const respondedUrls = res?.map((r) => ({
             name: r.name,

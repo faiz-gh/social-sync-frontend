@@ -1,5 +1,5 @@
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { CalendarEvent } from '@/types';
+import { EventType } from '@/types';
 import { PiMapPin, PiXBold } from 'react-icons/pi';
 import { ActionIcon, Button, Text, Title } from 'rizzui';
 import cn from '@/utils/class-names';
@@ -8,8 +8,8 @@ import useEventCalendar from '@/hooks/use-event-calendar';
 import { formatDate } from '@/utils/format-date';
 import EventForm from '@/app/shared/event-calendar/event-form';
 
-function DetailsEvents({ event }: { event: CalendarEvent }) {
-  const { deleteEvent } = useEventCalendar();
+function DetailsEvents({ event }: { event: EventType }) {
+  const { deleteEvent, fetchEvents } = useEventCalendar();
   const { openModal, closeModal } = useModal();
 
   function handleEditModal() {
@@ -20,8 +20,9 @@ function DetailsEvents({ event }: { event: CalendarEvent }) {
       });
   }
 
-  function handleDelete(eventID: string) {
+  async function handleDelete(eventID: string) {
     deleteEvent(eventID);
+    await fetchEvents();
     closeModal();
   }
 
@@ -54,23 +55,23 @@ function DetailsEvents({ event }: { event: CalendarEvent }) {
             <MdOutlineCalendarMonth className="h-5 w-5" />
             <span>Event Start:</span>
             <span className="font-medium text-gray-1000">
-              {formatDate(event.start, 'MMMM D, YYYY')} at{' '}
-              {formatDate(event.start, 'h:mm A')}
+              {formatDate(event.start_date, 'MMMM D, YYYY')} at{' '}
+              {formatDate(event.start_date, 'h:mm A')}
             </span>
           </li>
           <li className="flex gap-2">
             <MdOutlineCalendarMonth className="h-5 w-5" />
             <span>Event End:</span>
             <span className="font-medium text-gray-1000">
-              {formatDate(event.end, 'MMMM D, YYYY')} at{' '}
-              {formatDate(event.end, 'h:mm A')}
+              {formatDate(event.end_date, 'MMMM D, YYYY')} at{' '}
+              {formatDate(event.end_date, 'h:mm A')}
             </span>
           </li>
         </ul>
         <div className={cn('grid grid-cols-2 gap-4 pt-5 ')}>
           <Button
             variant="outline"
-            onClick={() => handleDelete(event.id as string)}
+            onClick={async  () => await handleDelete(event.id as string)}
           >
             Delete
           </Button>

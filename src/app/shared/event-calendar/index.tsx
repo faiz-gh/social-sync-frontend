@@ -1,8 +1,8 @@
 'use client';
 
-import type { CalendarEvent } from '@/types';
+import type { EventType } from '@/types';
 import dayjs from 'dayjs';
-import { useCallback, useMemo } from 'react';
+import {useCallback, useEffect, useMemo} from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import EventForm from '@/app/shared/event-calendar/event-form';
 import DetailsEvents from '@/app/shared/event-calendar/details-event';
@@ -20,9 +20,15 @@ const rtcEventClassName =
   '[&_.rbc-event]:!text-gray-0 dark:[&_.rbc-event]:!text-gray-0 dark:[&_.rbc-toolbar_>_*:last-child_>_button.rbc-active:hover]:!text-gray-0 dark:[&_.rbc-toolbar_>_*:last-child_>_button.rbc-active:focus]:!text-gray-0';
 
 export default function EventCalendarView() {
-  const { events } = useEventCalendar();
+  const { events, fetchEvents } = useEventCalendar();
   const { openModal } = useModal();
   const { colorPresetName } = useColorPresetName();
+
+  useEffect(() => {
+    fetchEvents().then(() => {
+      console.log("fetch");
+    });
+  }, []);
 
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
@@ -35,7 +41,7 @@ export default function EventCalendarView() {
   );
 
   const handleSelectEvent = useCallback(
-    (event: CalendarEvent) => {
+    (event: EventType) => {
       openModal({
         view: <DetailsEvents event={event} />,
         customSize: '500px',
@@ -73,8 +79,8 @@ export default function EventCalendarView() {
         events={events}
         views={views}
         formats={formats}
-        startAccessor="start"
-        endAccessor="end"
+        startAccessor="start_date"
+        endAccessor="end_date"
         dayLayoutAlgorithm="no-overlap"
         onSelectEvent={handleSelectEvent}
         onSelectSlot={handleSelectSlot}

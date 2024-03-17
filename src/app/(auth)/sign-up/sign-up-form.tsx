@@ -21,7 +21,6 @@ const initialValues = {
 };
 
 export default function SignUpForm() {
-  const router = useRouter();
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
   const onSubmit: SubmitHandler<SignUpSchema> = async (data) => {
@@ -35,8 +34,10 @@ export default function SignUpForm() {
     const response: IRegisterResponse = await register(payload);
 
     if (response.statusText === 'OK' && response.data.data) {
-      toast.success('Account created successfully');
-      router.push(routes.auth.signIn);
+      toast.success(response.data.message);
+      setReset(initialValues);
+    } else {
+      toast.error(response.data.message);
     }
   };
 

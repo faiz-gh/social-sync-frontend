@@ -1,8 +1,11 @@
 import { ICreateEmployeeRequest, IGetEmployeeRequest, IGetEmployeesByCompanyRequest, IQueryParams, IUpdateEmployeeRequest } from "@/types";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
+import axios from "@/lib/axios";
 
 export async function createEmployee(payload: ICreateEmployeeRequest): Promise<AxiosResponse> {
-    return await axios.post('http://localhost:5500/employee', payload);
+    return await axios.post('/employee', payload, {
+        validateStatus: () => true
+    });
 }
 
 export async function updateEmployee(payload: IUpdateEmployeeRequest): Promise<AxiosResponse> {
@@ -12,13 +15,19 @@ export async function updateEmployee(payload: IUpdateEmployeeRequest): Promise<A
         lastName: payload.lastName,
         roleId: payload.roleId
     }
-    return await axios.put('http://localhost:5500/employee?' + new URLSearchParams(queryParams));
+    return await axios.put('/employee?' + new URLSearchParams(queryParams), {}, {
+        validateStatus: () => true
+    });
 }
 
 export async function getEmployee(payload: IGetEmployeeRequest): Promise<AxiosResponse> {
-    return await axios.get(`http://localhost:5500/employee/` + payload.id);
+    return await axios.get(`/employee/` + payload.id, {
+        validateStatus: () => true
+    });
 }
 
 export async function getEmployeesByCompany(payload: IGetEmployeesByCompanyRequest): Promise<AxiosResponse> {
-    return await axios.get(`http://localhost:5500/employee/company/` + payload.companyId);
+    return await axios.get(`/employee/company/` + payload.companyId, {
+        validateStatus: () => true
+    });
 }

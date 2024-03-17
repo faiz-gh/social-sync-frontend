@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation';
 import { ILoginRequest, ILoginResponse } from '@/types';
 import Cookies from 'js-cookie';
 import { login } from '@/lib/apiRequests/auth';
+import {useState} from "react";
+import toast from "react-hot-toast";
 
 const initialValues: LoginSchema = {
   email: '',
@@ -27,10 +29,16 @@ export default function SignInForm() {
     const response: ILoginResponse = await login(payload);
 
     if (response.statusText === 'OK' && response.data.data) {
-      Cookies.set('email', data.email);
-      Cookies.set('token', response.data.data.Session);
-      localStorage.setItem('token', response.data.data.Session);
+      // localStorage.setItem('email', data.email);
+      // localStorage.setItem('token', response.data.data.Session);
+
+      Cookies.set('email', data.email)
+      Cookies.set('token', response.data.data.Session)
+
+      toast.success('Login otp sent to your email');
       router.push(routes.auth.verifyOtp);
+    } else {
+      toast.error(response.data.message);
     }
   };
 

@@ -446,7 +446,7 @@ export interface ICreateEventRequest {
   companyId: string;
   title: string;
   description: string;
-  location: string;
+  location?: string;
   startDate: Date;
   endDate: Date;
 }
@@ -455,7 +455,7 @@ export interface IUpdateEventRequest {
   id: string;
   title: string;
   description: string;
-  location: string;
+  location?: string;
   startDate: Date;
   endDate: Date;
 }
