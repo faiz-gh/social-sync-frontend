@@ -6,9 +6,8 @@ import ExportButton from '@/app/shared/export-button';
 import { getColumns } from '../columns';
 import ModalButton from '@/app/shared/modal-button';
 import AddClientForm from '../add-client-form';
-import {ClientType} from "@/types";
-import {useEffect, useState} from "react";
 import useClient from "@/hooks/use-client";
+import {useEffect} from "react";
 
 const pageHeader = {
   title: 'Clients',
@@ -25,24 +24,18 @@ const pageHeader = {
 };
 
 export default function ClientPage({ params }: { params: { employeeId: string } }) {
-  const [clients, setClients] = useState<ClientType[]>([])
-  const [renderTable, setRenderTable] = useState(false);
-  const { fetchClientsByEmployee } = useClient();
+  const { clientsByEmployee, fetchClientsByEmployee } = useClient();
 
   useEffect(() => {
-    fetchClientsByEmployee(params.employeeId, setClients);
+    fetchClientsByEmployee(params.employeeId);
   }, []);
 
-  useEffect(() => {
-    setRenderTable(true);
-  }, [clients]);
-
-  if (clients.length > 0) {
+  if (clientsByEmployee.length > 0) {
     return (
       <>
         <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
           <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-            <ExportButton data={clients} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
+            <ExportButton data={clientsByEmployee} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
             <ModalButton
               label="Create Client"
               view={<AddClientForm />}
@@ -54,7 +47,7 @@ export default function ClientPage({ params }: { params: { employeeId: string } 
         <div className="grid grid-cols-1 gap-6 3xl:gap-8">
           <BasicTableWidget
             variant="minimal"
-            data={clients}
+            data={clientsByEmployee}
             // @ts-ignore
             getColumns={getColumns}
             enableSearch={false}
@@ -69,7 +62,7 @@ export default function ClientPage({ params }: { params: { employeeId: string } 
       <>
         <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
           <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-            <ExportButton data={clients} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
+            <ExportButton data={clientsByEmployee} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
             <ModalButton
               label="Create Client"
               view={<AddClientForm />}
@@ -79,7 +72,9 @@ export default function ClientPage({ params }: { params: { employeeId: string } 
           </div>
         </PageHeader>
         <div className="grid grid-cols-1 gap-6 3xl:gap-8">
-
+          <div className="flex items-center justify-center h-96">
+            <p className="text-gray-500 text-lg">No clients found</p>
+          </div>
         </div>
       </>
     );

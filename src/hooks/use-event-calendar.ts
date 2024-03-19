@@ -13,13 +13,19 @@ import {useRouter} from "next/navigation";
 import {getEventsByCompany} from "@/lib/apiRequests/event";
 import {createEvent as addEvent, updateEvent as changeEvent, removeEvent} from "@/lib/apiRequests/event";
 
-let eventList: EventType[] = [] as EventType[];
-
-export const eventAtom = atom<EventType[]>(eventList);
+export const eventAtom = atom<EventType[]>([]);
+export const fetchEventAtom = atom<boolean>(true);
 
 export default function useEventCalendar() {
   const [events, setEvents] = useAtom(eventAtom);
-  const router = useRouter()
+  const [fetchEvent, setFetchEvent] = useAtom(fetchEventAtom);
+  const router = useRouter();
+
+  if (fetchEvent){
+    fetchEvents().then(
+      () => setFetchEvent(false)
+    );
+  }
 
   async function fetchEvents() {
     const userStr = localStorage.getItem('user');
@@ -68,6 +74,7 @@ export default function useEventCalendar() {
     addEvent(payload).then((response: ICreateEventResponse) => {
       if (response.statusText === 'OK' && response.data.data){
         toast.success(response.data.message);
+        setFetchEvent(true);
       } else {
         toast.error(response.data.message);
       }
@@ -94,6 +101,7 @@ export default function useEventCalendar() {
     changeEvent(payload).then((response: IUpdateEventResponse) => {
       if (response.statusText === 'OK' && response.data.data){
         toast.success(response.data.message);
+        setFetchEvent(true);
       } else {
         toast.error(response.data.message);
       }
@@ -107,6 +115,7 @@ export default function useEventCalendar() {
     removeEvent(payload).then((response: IDeleteEventResponse) => {
       if (response.statusText === 'OK' && response.data.data){
         toast.success(response.data.message);
+        setFetchEvent(true);
       } else {
         toast.error(response.data.message);
       }

@@ -23,19 +23,19 @@ export default async function RootLayout({
       // 💡 Prevent next-themes hydration warning
       suppressHydrationWarning
     >
-      <body
-        // 💡 Prevent hydration warnings caused by third-party extensions, such as Grammarly.
-        suppressHydrationWarning
-        className={cn(inter.variable, lexendDeca.variable, "font-inter")}
-      >
-        <ThemeProvider>
-          <NextProgress />
-          {children}
-          <Toaster />
-          <GlobalDrawer />
-          <GlobalModal />
-        </ThemeProvider>
-      </body>
+    <body
+      // 💡 Prevent hydration warnings caused by third-party extensions, such as Grammarly.
+      suppressHydrationWarning
+      className={cn(inter.variable, lexendDeca.variable, "font-inter")}
+    >
+    <ThemeProvider>
+      <NextProgress/>
+      {children}
+      <Toaster/>
+      <GlobalDrawer/>
+      <GlobalModal/>
+    </ThemeProvider>
+    </body>
     </html>
   );
 }

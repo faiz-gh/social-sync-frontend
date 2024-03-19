@@ -70,16 +70,16 @@ export const getColumns = ({
       render: (email: string) => email.toLowerCase(),
     },
     {
-      title: <HeaderCell title="Employee Id" />,
-      dataIndex: 'employee_id',
-      key: 'employee_id',
+      title: <HeaderCell title="Employee Name" />,
+      dataIndex: 'employee_name',
+      key: 'employee_name',
       width: 250,
-      render: (employee_id: string) => employee_id.toString(),
+      render: (employee_name: string) => employee_name.toString(),
     },
     {
       title: (
         <HeaderCell
-          title="Total Accounts"
+          title="Account Status"
           sortable
           ascending={
             sortConfig?.direction === 'asc' && sortConfig?.key === 'total_accounts'
@@ -92,7 +92,7 @@ export const getColumns = ({
       width: 200,
       render: (total_accounts: string) => (
         <Text className="font-medium text-gray-700 dark:text-gray-600">
-          {total_accounts}
+          {(parseInt(total_accounts) > 0) ? 'Connected' : 'Not Connected'}
         </Text>
       ),
     },

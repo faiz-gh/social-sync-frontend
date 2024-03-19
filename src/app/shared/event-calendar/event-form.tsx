@@ -2,7 +2,7 @@
 
 import { PiXBold } from 'react-icons/pi';
 import { Controller, SubmitHandler } from 'react-hook-form';
-import { ActionIcon, Button, Input, Text, Textarea, Title } from 'rizzui';
+import { ActionIcon, Button, Input, Textarea, Title } from 'rizzui';
 import cn from '@/utils/class-names';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
@@ -26,7 +26,7 @@ export default function EventForm({
   event,
 }: CreateEventProps) {
   const { closeModal } = useModal();
-  const { createEvent, updateEvent, fetchEvents } = useEventCalendar();
+  const { createEvent, updateEvent } = useEventCalendar();
 
   const isUpdateEvent = event !== undefined;
 
@@ -47,7 +47,6 @@ export default function EventForm({
         end_date: data.endDate,
       });
     }
-    await fetchEvents();
     closeModal();
   };
 

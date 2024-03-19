@@ -12,6 +12,7 @@ import {useRouter} from "next/navigation";
 import {createClient, updateClient} from "@/lib/apiRequests/client";
 import {useEffect, useState} from "react";
 import useEmployee from "@/hooks/use-employee";
+import useClient from "@/hooks/use-client";
 
 interface ClientFormInput {
   id?: string;
@@ -23,14 +24,10 @@ interface ClientFormInput {
 
 export default function UpdateClientForm({ client }: { client: ClientType }) {
   const { closeModal } = useModal();
-  const router = useRouter();
-  const [employees, setEmployees] = useState<UserType[]>([]);
-  const [employeeList, setEmployeeList] = useState<SelectOption[]>([]);
-  const { fetchEmployees } = useEmployee();
+  const { employees } = useEmployee();
+  const { updateClient, fetchClientsByEmployee } = useClient();
 
-  useEffect(() => {
-    fetchEmployees(setEmployees);
-  }, []);
+  const [employeeList, setEmployeeList] = useState<SelectOption[]>([]);
 
   useEffect(() => {
     employees.map((employee) => {
@@ -52,31 +49,14 @@ export default function UpdateClientForm({ client }: { client: ClientType }) {
   }
 
   const onSubmit: SubmitHandler<ClientFormInput> = async (data) => {
-    const userStr = localStorage.getItem('user');
-    const company = userStr ? JSON.parse(userStr) : null;
-
-    const payload: IUpdateClientRequest = {
+    updateClient({
       id: client?.id || '',
       name: data?.name || '',
       email: data?.email || '',
       employeeId: data?.employeeId || '',
-    }
-    updateClient(payload).then((response) => {
-      if (response.statusText === 'OK' && response.data.data){
-        toast.success(
-          <Text as="b">
-            {response.data.message}
-          </Text>
-        );
-        router.refresh();
-      } else {
-        toast.error(
-          <Text as="b">
-            {response.data.message}
-          </Text>
-        );
-      }
     });
+    await fetchClientsByEmployee(data?.employeeId || '');
+
     closeModal();
   };
 
@@ -124,7 +104,7 @@ export default function UpdateClientForm({ client }: { client: ClientType }) {
                     value={value}
                     onChange={onChange}
                     name={name}
-                    label="Role"
+                    label="Employee"
                     className="col-span-full"
                     getOptionValue={(option) => option.value}
                     displayValue={(selected: string) =>

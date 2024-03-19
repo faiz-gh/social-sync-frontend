@@ -1,14 +1,14 @@
 "use client"
 import PageHeader from '@/app/shared/page-header';
-import { routes } from '@/config/routes';
+import {routes} from '@/config/routes';
 import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
 import ExportButton from '@/app/shared/export-button';
-import { getColumns } from './columns';
+import {getColumns} from './columns';
 import ModalButton from '@/app/shared/modal-button';
 import AddEmployeeForm from './add-employee-form';
-import {UserType} from "@/types";
-import {useEffect, useRef, useState} from "react";
 import useEmployee from "@/hooks/use-employee";
+import {useEffect, useState} from "react";
+import {UserType} from "@/types";
 
 const pageHeader = {
   title: 'Employees',
@@ -25,15 +25,7 @@ const pageHeader = {
 };
 
 export default function EmployeePage() {
-  const [employees, setEmployees] = useState<UserType[]>([])
-  const [renderTable, setRenderTable] = useState(false);
-  const { fetchEmployees } = useEmployee();
-
-  useEffect(() => {
-    fetchEmployees(setEmployees).then(() => {
-        setRenderTable(true);
-    });
-  }, []);
+  const { employees } = useEmployee();
 
   if (employees.length > 0) {
     return (
@@ -49,7 +41,7 @@ export default function EmployeePage() {
             />
           </div>
         </PageHeader>
-        <div className="grid grid-cols-1 gap-6 3xl:gap-8">
+        <div className="grid grid-cols-1 gap-6 3xl:gap-8" id="hello">
           <BasicTableWidget
             variant="minimal"
             data={employees}
@@ -77,10 +69,11 @@ export default function EmployeePage() {
           </div>
         </PageHeader>
         <div className="grid grid-cols-1 gap-6 3xl:gap-8">
-
+          <div className="flex items-center justify-center w-full h-[calc(100vh-200px)]">
+            <p className="text-lg text-gray-500">No employees found</p>
+          </div>
         </div>
       </>
     );
   }
-
 }

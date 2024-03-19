@@ -14,47 +14,51 @@ import { SiQuantconnect } from 'react-icons/si'
 import TransactionCard, {
   TransactionType,
 } from '@/components/cards/transaction-card';
+import useAnalytics from "@/hooks/use-analytics";
 
 type FileStatsType = {
   className?: string;
 };
 
-const statData: TransactionType[] = [
-  {
-    title: 'Total Posts',
-    amount: '100',
-    increased: true,
-    percentage: '32.45',
-    icon: PiNotePencilBold,
-    iconWrapperFill: '#8A63D2',
-  },
-  {
-    title: 'Total Employees',
-    amount: '5',
-    increased: false,
-    percentage: '32.45',
-    icon: PiUserListBold,
-    iconWrapperFill: '#00CEC9',
-  },
-  {
-    title: 'Total Clients',
-    amount: '10',
-    increased: true,
-    percentage: '32.45',
-    icon: PiUsersBold,
-    iconWrapperFill: '#0070F3',
-  },
-  {
-    title: 'Total Connections',
-    amount: '50',
-    increased: false,
-    percentage: '32.45',
-    icon: SiQuantconnect,
-    iconWrapperFill: '#F5A623',
-  },
-];
-
 export function StatGrid() {
+  const { companyDashboardAnalytics } = useAnalytics();
+  const { total_employees, total_accounts, total_clients, total_posts } = companyDashboardAnalytics;
+
+  const statData: TransactionType[] = [
+    {
+      title: 'Total Employees',
+      amount: total_employees?.toString() || '0',
+      increased: false,
+      percentage: '32.45',
+      icon: PiUserListBold,
+      iconWrapperFill: '#00CEC9',
+    },
+    {
+      title: 'Total Clients',
+      amount: total_clients?.toString() || '0',
+      increased: true,
+      percentage: '32.45',
+      icon: PiUsersBold,
+      iconWrapperFill: '#0070F3',
+    },
+    {
+      title: 'Total Posts',
+      amount: total_posts?.toString() || '0',
+      increased: true,
+      percentage: '32.45',
+      icon: PiNotePencilBold,
+      iconWrapperFill: '#8A63D2',
+    },
+    {
+      title: 'Total Connections',
+      amount: total_accounts?.toString() || '0',
+      increased: false,
+      percentage: '32.45',
+      icon: SiQuantconnect,
+      iconWrapperFill: '#F5A623',
+    }
+  ];
+
   return (
     <>
       {statData.map((stat: any, index: number) => {

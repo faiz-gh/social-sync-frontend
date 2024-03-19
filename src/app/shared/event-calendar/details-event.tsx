@@ -1,6 +1,7 @@
+'use client'
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { EventType } from '@/types';
-import { PiMapPin, PiXBold } from 'react-icons/pi';
+import { PiXBold } from 'react-icons/pi';
 import { ActionIcon, Button, Text, Title } from 'rizzui';
 import cn from '@/utils/class-names';
 import { MdOutlineCalendarMonth } from 'react-icons/md';
@@ -9,7 +10,7 @@ import { formatDate } from '@/utils/format-date';
 import EventForm from '@/app/shared/event-calendar/event-form';
 
 function DetailsEvents({ event }: { event: EventType }) {
-  const { deleteEvent, fetchEvents } = useEventCalendar();
+  const { deleteEvent } = useEventCalendar();
   const { openModal, closeModal } = useModal();
 
   function handleEditModal() {
@@ -20,9 +21,8 @@ function DetailsEvents({ event }: { event: EventType }) {
       });
   }
 
-  async function handleDelete(eventID: string) {
-    deleteEvent(eventID);
-    await fetchEvents();
+  async function handleDelete(eventId: string) {
+    deleteEvent(eventId);
     closeModal();
   }
 

@@ -2,15 +2,12 @@
 
 import { PiXBold } from 'react-icons/pi';
 import { SubmitHandler } from 'react-hook-form';
-import { ActionIcon, Button, Input, Text, Title } from 'rizzui';
+import { ActionIcon, Button, Input, Title } from 'rizzui';
 import cn from '@/utils/class-names';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
-import toast from 'react-hot-toast';
-import {IUpdateEmployeeRequest, UserType} from '@/types';
-import {updateEmployee} from "@/lib/apiRequests/employee";
-import {useRouter} from "next/navigation";
-import {USER_ROLE} from "@/config/enums";
+import { UserType} from '@/types';
+import useEmployee from "@/hooks/use-employee";
 
 interface EmployeeFormInput {
   id?: string;
@@ -21,8 +18,7 @@ interface EmployeeFormInput {
 
 export default function UpdateEmployeeForm({ employee }: { employee: UserType }) {
   const { closeModal } = useModal();
-
-  const router = useRouter();
+  const { updateEmployee } = useEmployee();
 
   const initialValues = {
     id: employee?.id || '',
@@ -31,28 +27,11 @@ export default function UpdateEmployeeForm({ employee }: { employee: UserType })
   }
 
   const onSubmit: SubmitHandler<EmployeeFormInput> = async (data) => {
-    const payload: IUpdateEmployeeRequest = {
+    updateEmployee({
       id: employee?.id || '',
-      firstName: data?.firstName || '',
-      lastName: data?.lastName || '',
-      roleId: USER_ROLE.EMPLOYEE,
-    }
-    updateEmployee(payload).then((response) => {
-      if (response.statusText === 'OK' && response.data.data){
-        toast.success(
-          <Text as="b">
-            {response.data.message}
-          </Text>
-        );
-        router.refresh();
-      } else {
-        toast.error(
-          <Text as="b">
-            {response.data.message}
-          </Text>
-        );
-      }
-    });
+      first_name: data?.firstName || '',
+      last_name: data?.lastName || '',
+    })
     closeModal();
   };
 

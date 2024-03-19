@@ -34,6 +34,7 @@ export type ClientType = {
   id?: string;
   company_id?: string;
   employee_id?: string;
+  employee_name?: string;
   name?: string;
   email?: string;
   created_date?: Date;
@@ -87,6 +88,13 @@ export type FeedbackType = {
   created_date?: Date;
   is_opened?: boolean;
   is_deleted?: boolean;
+}
+
+export type CompanyDashboardAnalyticsType = {
+  total_posts: number;
+  total_employees: number;
+  total_clients: number;
+  total_accounts: number;
 }
 
 /** Response Interfaces */
@@ -293,6 +301,18 @@ export interface IGetEventsByCompanyResponse extends AxiosResponse {
   };
 }
 
+// Analytics Response
+export interface IGetCompanyDashboardAnalyticsResponse extends AxiosResponse {
+  data: DefaultResponseType & {
+    data?: {
+      total_posts: number;
+      total_employees: number;
+      total_clients: number;
+      total_accounts: number;
+    };
+  };
+}
+
 /** Request Interfaces */
 
 // Auth Service
@@ -496,6 +516,11 @@ export interface IGetFeedbackRequest {
 
 export interface IGetFeedbacksByUserRequest {
   userId: string;
+}
+
+// Analytics Service
+export interface IGetCompanyDashboardAnalyticsRequest {
+  companyId: string;
 }
 
 export interface IQueryParams {

@@ -2,14 +2,11 @@
 
 import { PiXBold } from 'react-icons/pi';
 import { SubmitHandler } from 'react-hook-form';
-import { ActionIcon, Button, Input, Text, Textarea, Title } from 'rizzui';
+import { ActionIcon, Button, Input, Title } from 'rizzui';
 import cn from '@/utils/class-names';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
-import toast from 'react-hot-toast';
-import {ICreateEmployeeRequest} from '@/types';
-import {createEmployee} from "@/lib/apiRequests/employee";
-import {useRouter} from "next/navigation";
+import useEmployee from "@/hooks/use-employee";
 
 interface EmployeeFormInput {
     firstName?: string;
@@ -19,35 +16,14 @@ interface EmployeeFormInput {
 
 export default function AddEmployeeForm() {
     const { closeModal } = useModal();
-
-    const router = useRouter();
+    const { createEmployee } = useEmployee();
 
     const onSubmit: SubmitHandler<EmployeeFormInput> = (data) => {
-        const userStr = localStorage.getItem('user');
-        const company = userStr ? JSON.parse(userStr) : null;
-
-        const payload: ICreateEmployeeRequest = {
-            firstName: data?.firstName || '',
-            lastName: data?.lastName || '',
+        createEmployee({
+            first_name: data?.firstName || '',
+            last_name: data?.lastName || '',
             email: data?.email || '',
-            companyId: company?.id || ''
-        }
-        createEmployee(payload).then((response) => {
-            if (response.statusText === 'OK' && response.data.data){
-                toast.success(
-                  <Text as="b">
-                    {response.data.message}
-                  </Text>
-                );
-                router.refresh();
-            } else {
-                toast.error(
-                  <Text as="b">
-                    {response.data.message}
-                  </Text>
-                );
-            }
-        });
+        })
         closeModal();
     };
 

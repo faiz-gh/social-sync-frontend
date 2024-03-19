@@ -1,12 +1,8 @@
+'use client'
 import PageHeader from '@/app/shared/page-header';
 import { routes } from '@/config/routes';
-import { metaObject } from '@/config/site.config';
 import EventCalendarView from '@/app/shared/event-calendar';
 import DashboardStats from '@/app/shared/dashboard-stats';
-
-export const metadata = {
-  ...metaObject('Dashboard'),
-};
 
 const pageHeader = {
   title: 'Dashboard',

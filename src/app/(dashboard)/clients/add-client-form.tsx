@@ -2,16 +2,13 @@
 
 import { PiXBold } from 'react-icons/pi';
 import { SubmitHandler, Controller } from 'react-hook-form';
-import {ActionIcon, Button, Input, Select, SelectOption, Text, Textarea, Title} from 'rizzui';
+import {ActionIcon, Button, Input, Select, SelectOption, Title} from 'rizzui';
 import cn from '@/utils/class-names';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
-import toast from 'react-hot-toast';
-import {ICreateClientRequest, UserType} from '@/types';
-import {useRouter} from "next/navigation";
-import {createClient} from "@/lib/apiRequests/client";
 import {useEffect, useState} from "react";
 import useEmployee from "@/hooks/use-employee";
+import useClient from "@/hooks/use-client";
 
 interface ClientFormInput {
     name?: string;
@@ -22,14 +19,10 @@ interface ClientFormInput {
 
 export default function UpdateClientForm() {
     const { closeModal } = useModal();
-    const router = useRouter();
-    const [employees, setEmployees] = useState<UserType[]>([]);
-    const [employeeList, setEmployeeList] = useState<SelectOption[]>([]);
-    const { fetchEmployees } = useEmployee();
+    const { employees } = useEmployee();
+    const { createClient, fetchClientsByEmployee } = useClient();
 
-    useEffect(() => {
-        fetchEmployees(setEmployees);
-    }, []);
+    const [employeeList, setEmployeeList] = useState<SelectOption[]>([]);
 
     useEffect(() => {
         employees.map((employee) => {
@@ -44,31 +37,13 @@ export default function UpdateClientForm() {
     }, [employees]);
 
     const onSubmit: SubmitHandler<ClientFormInput> = async (data) => {
-        const userStr = localStorage.getItem('user');
-        const company = userStr ? JSON.parse(userStr) : null;
-
-        const payload: ICreateClientRequest = {
+        createClient({
             name: data?.name || '',
             email: data?.email || '',
-            companyId: company?.id || '',
             employeeId: data?.employeeId || ''
-        }
-        createClient(payload).then((response) => {
-            if (response.statusText === 'OK' && response.data.data){
-                toast.success(
-                  <Text as="b">
-                    {response.data.message}
-                  </Text>
-                );
-                router.refresh();
-            } else {
-                toast.error(
-                  <Text as="b">
-                    {response.data.message}
-                  </Text>
-                );
-            }
         });
+        await fetchClientsByEmployee(data?.employeeId || '');
+
         closeModal();
     };
 
@@ -113,7 +88,7 @@ export default function UpdateClientForm() {
                                   value={value}
                                   onChange={onChange}
                                   name={name}
-                                  label="Role"
+                                  label="Employee"
                                   className="col-span-full"
                                   getOptionValue={(option) => option.value}
                                   displayValue={(selected: string) =>

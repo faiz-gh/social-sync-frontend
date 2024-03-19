@@ -20,15 +20,9 @@ const rtcEventClassName =
   '[&_.rbc-event]:!text-gray-0 dark:[&_.rbc-event]:!text-gray-0 dark:[&_.rbc-toolbar_>_*:last-child_>_button.rbc-active:hover]:!text-gray-0 dark:[&_.rbc-toolbar_>_*:last-child_>_button.rbc-active:focus]:!text-gray-0';
 
 export default function EventCalendarView() {
-  const { events, fetchEvents } = useEventCalendar();
+  const { events } = useEventCalendar();
   const { openModal } = useModal();
   const { colorPresetName } = useColorPresetName();
-
-  useEffect(() => {
-    fetchEvents().then(() => {
-      console.log("fetch");
-    });
-  }, []);
 
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
