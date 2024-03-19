@@ -5,8 +5,10 @@ import cn from '@/utils/class-names';
 import SimpleBar from '@/components/ui/simplebar';
 import Logo from '@/components/logo';
 import { SidebarMenu } from './sidebar-menu';
+import useUserRole from "@/hooks/use-user-role";
 
 export default function Sidebar({ className }: { className?: string }) {
+  const { userRole } = useUserRole();
   return (
     <aside
       className={cn(
@@ -25,7 +27,7 @@ export default function Sidebar({ className }: { className?: string }) {
       </div>
 
       <SimpleBar className="h-[calc(100%-80px)]">
-        <SidebarMenu />
+        <SidebarMenu userRole={userRole} />
       </SimpleBar>
     </aside>
   );

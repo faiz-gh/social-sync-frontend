@@ -9,6 +9,7 @@ import {verifyOtp} from "@/lib/apiRequests/auth";
 import {useRouter} from "next/navigation";
 import {routes} from "@/config/routes";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 
 type FormValues = {
   otp: string;
@@ -31,6 +32,7 @@ export default function OtpForm({ email, sessionToken }: OtpFormProps) {
 
     if (response.statusText === 'OK' && response.data.data) {
       localStorage.setItem('user', JSON.stringify(response.data.data));
+      Cookies.set('user_role', response.data.data.role_id as string);
       toast.success(response.data.message);
       router.push(routes.sidebar.dashboard);
     } else {

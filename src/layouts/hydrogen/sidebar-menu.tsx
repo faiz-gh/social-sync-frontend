@@ -4,10 +4,13 @@ import { usePathname } from 'next/navigation';
 import { Title, Collapse } from 'rizzui';
 import cn from '@/utils/class-names';
 import { PiCaretDownBold } from 'react-icons/pi';
-import { menuItems } from '@/layouts/hydrogen/menu-items';
+import { companyMenuItems, employeeMenuItems } from '@/layouts/hydrogen/menu-items';
+import {USER_ROLE} from "@/config/enums";
 
-export function SidebarMenu() {
+export function SidebarMenu( { userRole }: { userRole: string }) {
   const pathname = usePathname();
+
+  const menuItems = (userRole === USER_ROLE.COMPANY) ? companyMenuItems : employeeMenuItems;
 
   return (
     <div className="mt-4 pb-3 3xl:mt-6">

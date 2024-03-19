@@ -1,3 +1,4 @@
+'use client';
 import Header from '@/layouts/hydrogen/header';
 import Sidebar from '@/layouts/hydrogen/sidebar';
 

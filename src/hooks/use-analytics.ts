@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import {routes} from "@/config/routes";
 import {useRouter} from "next/navigation";
 import {getCompanyDashboardAnalytics} from "@/lib/apiRequests/analytics";
+import {useLocalStorage} from "react-use";
 
 const defaultAnalytics: CompanyDashboardAnalyticsType = {
   total_accounts: 0,
@@ -24,6 +25,7 @@ export default function useAnalytics() {
   const [companyDashboardAnalytics, setCompanyDashboardAnalytics] = useAtom(dashboardAnalyticsAtom);
   const [fetchAnalytics, setFetchAnalytics] = useAtom(fetchDashboardAnalyticsAtom);
   const router = useRouter();
+  const user: UserType = useLocalStorage('user')[0] as UserType;
 
   if (fetchAnalytics){
     fetchCompanyDashboardAnalytics().then(
@@ -32,9 +34,6 @@ export default function useAnalytics() {
   }
 
   async function fetchCompanyDashboardAnalytics() {
-    const userStr = localStorage.getItem('user');
-    const user: UserType = userStr ? JSON.parse(userStr) : null;
-
     if (!user){
       toast.error('User not logged in');
       router.push(routes.auth.signIn);

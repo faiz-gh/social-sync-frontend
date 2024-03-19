@@ -13,6 +13,7 @@ import {
     updateEmployee as changeEmployee
 } from "@/lib/apiRequests/employee";
 import {USER_ROLE} from "@/config/enums";
+import {useLocalStorage} from "react-use";
 
 export const employeeAtom = atom<UserType[]>([]);
 export const fetchEmployeeAtom = atom<boolean>(true);
@@ -21,6 +22,7 @@ export default function useEmployee() {
     const [employees, setEmployees] = useAtom(employeeAtom);
     const [fetchEmployee, setFetchEmployee] = useAtom(fetchEmployeeAtom);
     const router = useRouter();
+    const user: UserType = useLocalStorage('user')[0] as UserType;
 
     if (fetchEmployee){
         fetchEmployees().then(
@@ -29,9 +31,6 @@ export default function useEmployee() {
     }
 
     async function fetchEmployees() {
-        const userStr = localStorage.getItem('user');
-        const user: UserType = userStr ? JSON.parse(userStr) : null;
-
         if (!user){
             toast.error('User not logged in');
             router.push(routes.auth.signIn);
@@ -55,9 +54,6 @@ export default function useEmployee() {
         last_name: string;
         email: string;
     }) {
-        const userStr = localStorage.getItem('user');
-        const user: UserType = userStr ? JSON.parse(userStr) : null;
-
         if (!user){
             toast.error('User not logged in');
             router.push(routes.auth.signIn);
@@ -84,9 +80,6 @@ export default function useEmployee() {
         first_name: string;
         last_name: string;
     }) {
-        const userStr = localStorage.getItem('user');
-        const user: UserType = userStr ? JSON.parse(userStr) : null;
-
         if (!user){
             toast.error('User not logged in');
             router.push(routes.auth.signIn);

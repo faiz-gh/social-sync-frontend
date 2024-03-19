@@ -1,7 +1,7 @@
 import { routes } from '@/config/routes';
 import {
   PiCalendarPlusDuotone,
-  PiFolderNotchDuotone,
+  PiFolderNotchDuotone, PiNoteDuotone,
   PiUserListDuotone,
   PiUsersDuotone,
 } from 'react-icons/pi';
@@ -23,7 +23,7 @@ type MenuItems = {
 };
 
 // Note: do not add href in the label object, it is rendering as label
-export const menuItems: MenuItems[] = [
+export const companyMenuItems: MenuItems[] = [
   {
     name: 'Dashboard',
     href: routes.sidebar.dashboard,
@@ -40,8 +40,38 @@ export const menuItems: MenuItems[] = [
     icon: <PiUsersDuotone />,
   },
   {
+    name: 'Posts',
+    href: routes.sidebar.posts,
+    icon: <PiNoteDuotone />,
+  },
+  {
     name: 'Events',
     href: routes.sidebar.events,
     icon: <PiCalendarPlusDuotone />,
   },
 ];
+
+export const employeeMenuItems: MenuItems[] = [
+  {
+    name: 'Dashboard',
+    href: routes.sidebar.dashboard,
+    icon: <PiFolderNotchDuotone />,
+  },
+  {
+    name: 'Clients',
+    href: routes.sidebar.clients,
+    icon: <PiUsersDuotone />,
+  },
+  {
+    name: 'Posts',
+    href: routes.sidebar.posts,
+    icon: <PiNoteDuotone />,
+  },
+  {
+    name: 'Events',
+    href: routes.sidebar.events,
+    icon: <PiCalendarPlusDuotone />,
+  },
+];
+
+

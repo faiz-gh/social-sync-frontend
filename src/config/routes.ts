@@ -4,6 +4,7 @@ export const routes = {
     employees: '/employees',
     clients: '/clients',
     events: '/events',
+    posts: '/posts',
   },
   menu: {
     profile: '/profile',

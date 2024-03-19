@@ -1,9 +1,10 @@
 import { AxiosResponse } from "axios";
+import {USER_ROLE} from "@/config/enums";
 
 /** Standard Types */
 export type UserType = {
   id?: string;
-  role_id?: number;
+  role_id?: USER_ROLE;
   aws_user_id?: string;
   first_name?: string;
   last_name?: string;

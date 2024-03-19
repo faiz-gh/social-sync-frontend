@@ -18,11 +18,10 @@ function DropdownMenu() {
   }
 
   return (
-    <div className="w-64 text-left rtl:text-right">
+    <div className="w-100 text-left rtl:text-right">
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
         <Avatar
-          src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
-          name="Albert Flores"
+          name={user?.first_name + " " + user?.last_name}
         />
         <div className="ms-3">
           <Title as="h6" className="font-semibold">
@@ -56,6 +55,15 @@ export default function ProfileMenu({
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  const userStr = localStorage.getItem('user');
+  const user: UserType = userStr ? JSON.parse(userStr) : null;
+  const router = useRouter();
+
+  function handleSignOut () {
+    localStorage.clear();
+    router.push(routes.auth.signIn);
+  }
+
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
@@ -75,13 +83,12 @@ export default function ProfileMenu({
           )}
         >
           <Avatar
-            src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars/avatar-11.webp"
-            name="John Doe"
+            name={user?.first_name + " " + user?.last_name}
             className={cn("!h-9 w-9 sm:!h-10 sm:!w-10", avatarClassName)}
           />
           {!!username && (
             <span className="username hidden text-gray-200 md:inline-flex dark:text-gray-700">
-              Hi, Andry
+              Hi, {user?.first_name}
             </span>
           )}
         </button>

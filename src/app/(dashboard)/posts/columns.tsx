@@ -1,18 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { Text, Badge, Tooltip, Checkbox, ActionIcon } from 'rizzui';
+import { Text, Tooltip, Checkbox, ActionIcon } from 'rizzui';
 import { HeaderCell } from '@/components/ui/table';
-import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
-import AccountForm from './add-account-form';
+import AddClientForm from './add-client-form';
 import ModalLink from '@/app/shared/modal-link';
-import { AccountType } from '@/types';
+import { PiUserCircleGear, PiUserList } from 'react-icons/pi';
+import { ClientType, IGetClientsByCompanyResponse } from '@/types';
+import UpdateClientForm from "@/app/(dashboard)/clients/update-client-form";
 
 type Columns = {
-  data: AccountType[];
+  data: ClientType[];
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];
@@ -69,29 +70,29 @@ export const getColumns = ({
       render: (email: string) => email.toLowerCase(),
     },
     {
-      title: <HeaderCell title="Employee Id" />,
-      dataIndex: 'employeeId',
-      key: 'employeeId',
+      title: <HeaderCell title="Employee Name" />,
+      dataIndex: 'employee_name',
+      key: 'employee_name',
       width: 250,
-      render: (employeeId: string) => employeeId.toString(),
+      render: (employee_name: string) => employee_name.toString(),
     },
     {
       title: (
         <HeaderCell
-          title="Total Accounts"
+          title="Account Status"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'totalAccounts'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'total_accounts'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('totalAccounts'),
-      dataIndex: 'totalAccounts',
-      key: 'totalAccounts',
+      onHeaderCell: () => onHeaderCellClick('total_accounts'),
+      dataIndex: 'total_accounts',
+      key: 'total_accounts',
       width: 200,
-      render: (totalAccounts: string) => (
+      render: (total_accounts: string) => (
         <Text className="font-medium text-gray-700 dark:text-gray-600">
-          {totalAccounts}
+          {(parseInt(total_accounts) > 0) ? 'Connected' : 'Not Connected'}
         </Text>
       ),
     },
@@ -101,15 +102,15 @@ export const getColumns = ({
           title="Created At"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'createdDate'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'created_date'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('createdDate'),
-      dataIndex: 'createdDate',
-      key: 'createdDate',
+      onHeaderCell: () => onHeaderCellClick('created_date'),
+      dataIndex: 'created_date',
+      key: 'created_date',
       width: 200,
-      render: (createdDate: Date) => <DateCell date={createdDate} />,
+      render: (created_date: Date) => <DateCell date={created_date} />,
     },
     {
       title: <></>,
@@ -125,7 +126,7 @@ export const getColumns = ({
             color="invert"
           >
             <ModalLink
-              view={<AccountForm />}
+              view={<UpdateClientForm client={row} />}
               customSize="900px"
             >
               <ActionIcon
@@ -140,24 +141,24 @@ export const getColumns = ({
           </Tooltip>
           <Tooltip
             size="sm"
-            content={'View Invoice'}
+            content={'Create Post'}
             placement="top"
             color="invert"
           >
-            <Link href={`/posts/${row.employeeId}`}>
+            <Link href={`/accounts/${row.id}`}>
               <ActionIcon
                 as="span"
                 size="sm"
                 variant="outline"
                 className="hover:!border-gray-900 hover:text-gray-700"
               >
-                <EyeIcon className="h-4 w-4" />
+                <PiUserCircleGear className="h-4 w-4" />
               </ActionIcon>
             </Link>
           </Tooltip>
           <DeletePopover
-            title={`Delete the invoice`}
-            description={`Are you sure you want to delete this #${row.id} invoice?`}
+            title={`Delete the client`}
+            description={`Are you sure you want to delete this client with id #${row.id}?`}
             onDelete={() => onDeleteItem(row.id)}
           />
         </div>

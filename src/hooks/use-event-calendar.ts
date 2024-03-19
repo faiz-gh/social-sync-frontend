@@ -12,6 +12,7 @@ import {routes} from "@/config/routes";
 import {useRouter} from "next/navigation";
 import {getEventsByCompany} from "@/lib/apiRequests/event";
 import {createEvent as addEvent, updateEvent as changeEvent, removeEvent} from "@/lib/apiRequests/event";
+import {useLocalStorage} from "react-use";
 
 export const eventAtom = atom<EventType[]>([]);
 export const fetchEventAtom = atom<boolean>(true);
@@ -20,6 +21,7 @@ export default function useEventCalendar() {
   const [events, setEvents] = useAtom(eventAtom);
   const [fetchEvent, setFetchEvent] = useAtom(fetchEventAtom);
   const router = useRouter();
+  const user: UserType = useLocalStorage('user')[0] as UserType;
 
   if (fetchEvent){
     fetchEvents().then(
@@ -28,9 +30,6 @@ export default function useEventCalendar() {
   }
 
   async function fetchEvents() {
-    const userStr = localStorage.getItem('user');
-    const user: UserType = userStr ? JSON.parse(userStr) : null;
-
     if (!user){
       toast.error('User not logged in');
       router.push(routes.auth.signIn);
@@ -55,9 +54,6 @@ export default function useEventCalendar() {
   }
 
   function createEvent(event: EventType) {
-    const userStr = localStorage.getItem('user');
-    const user: UserType = userStr ? JSON.parse(userStr) : null;
-
     if (!user){
       toast.error('User not logged in');
       router.push(routes.auth.signIn);
@@ -82,9 +78,6 @@ export default function useEventCalendar() {
   }
 
   function updateEvent(updatedEvent: EventType) {
-    const userStr = localStorage.getItem('user');
-    const user: UserType = userStr ? JSON.parse(userStr) : null;
-
     if (!user){
       toast.error('User not logged in');
       router.push(routes.auth.signIn);

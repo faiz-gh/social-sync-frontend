@@ -16,6 +16,7 @@ import {
 import toast from "react-hot-toast";
 import {routes} from "@/config/routes";
 import {useRouter} from "next/navigation";
+import {useLocalStorage} from "react-use";
 
 export const clientsByCompanyAtom = atom<ClientType[]>([]);
 export const clientsByEmployeeAtom = atom<ClientType[]>([]);
@@ -26,6 +27,7 @@ export default function useClient() {
     const [clientsByCompany, setClientsByCompany] = useAtom(clientsByCompanyAtom);
     const [fetchClientByCompany, setFetchClientByCompany] = useAtom(fetchClientsByCompanyAtom);
     const router = useRouter();
+    const user: UserType = useLocalStorage('user')[0] as UserType;
 
     if (fetchClientByCompany){
         fetchClientsByCompany().then(
@@ -34,9 +36,6 @@ export default function useClient() {
     }
 
     async function fetchClientsByCompany() {
-        const userStr = localStorage.getItem('user');
-        const user: UserType = userStr ? JSON.parse(userStr) : null;
-
         if (!user){
             toast.error('User not logged in');
             router.push(routes.auth.signIn);
@@ -55,9 +54,6 @@ export default function useClient() {
     }
 
     async function fetchClientsByEmployee(employeeId: string) {
-        const userStr = localStorage.getItem('user');
-        const user: UserType = userStr ? JSON.parse(userStr) : null;
-
         if (!user){
             toast.error('User not logged in');
             router.push(routes.auth.signIn);
@@ -80,9 +76,6 @@ export default function useClient() {
         email: string;
         employeeId: string;
     }) {
-        const userStr = localStorage.getItem('user');
-        const user: UserType = userStr ? JSON.parse(userStr) : null;
-
         if (!user){
             toast.error('User not logged in');
             router.push(routes.auth.signIn);
@@ -110,9 +103,6 @@ export default function useClient() {
         email: string;
         employeeId: string;
     }) {
-        const userStr = localStorage.getItem('user');
-        const user: UserType = userStr ? JSON.parse(userStr) : null;
-
         if (!user){
             toast.error('User not logged in');
             router.push(routes.auth.signIn);
