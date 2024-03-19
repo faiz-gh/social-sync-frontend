@@ -6,10 +6,10 @@ import {usePathname, useRouter} from "next/navigation";
 import { useEffect, useState } from "react";
 import {UserType} from "@/types";
 import {routes} from "@/config/routes";
+import {useLocalStorage} from "react-use";
 
 function DropdownMenu() {
-  const userStr = localStorage.getItem('user');
-  const user: UserType = userStr ? JSON.parse(userStr) : null;
+  const user: UserType = useLocalStorage('user')[0] as UserType;
   const router = useRouter();
 
   function handleSignOut () {
@@ -55,14 +55,7 @@ export default function ProfileMenu({
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  const userStr = localStorage.getItem('user');
-  const user: UserType = userStr ? JSON.parse(userStr) : null;
-  const router = useRouter();
-
-  function handleSignOut () {
-    localStorage.clear();
-    router.push(routes.auth.signIn);
-  }
+  const user: UserType = useLocalStorage('user')[0] as UserType;
 
   useEffect(() => {
     setIsOpen(false);
