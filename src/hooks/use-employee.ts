@@ -88,7 +88,7 @@ export default function useEmployee() {
         const payload: IUpdateEmployeeRequest = {
             id: updatedEmployee?.id || '',
             firstName: updatedEmployee?.first_name || '',
-            lastName: updatedEmployee?.first_name || '',
+            lastName: updatedEmployee?.last_name || '',
             roleId: USER_ROLE.EMPLOYEE,
         }
         changeEmployee(payload).then((response: IUpdateEmployeeResponse) => {
