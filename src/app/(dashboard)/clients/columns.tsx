@@ -26,6 +26,7 @@ const facebookLogin = () => {
   window.FB.login(function(response: any) {
     if (response.authResponse) {
       console.log('Welcome!  Fetching your information.... ');
+      console.log(JSON.stringify(response));
       window.FB.api('/me', function(response: any) {
         console.log('Good to see you, ' + response.name + '.');
         console.log(JSON.stringify(response));
