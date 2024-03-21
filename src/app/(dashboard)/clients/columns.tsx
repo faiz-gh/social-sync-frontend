@@ -28,7 +28,7 @@ const facebookLogin = () => {
       console.log('Welcome!  Fetching your information.... ');
       window.FB.api('/me', function(response: any) {
         console.log('Good to see you, ' + response.name + '.');
-        console.log(JSON.parse(response));
+        console.log(JSON.stringify(response));
       });
     } else {
       console.log('User cancelled login or did not fully authorize.');
