@@ -44,6 +44,27 @@ export default function ClientPage() {
       }
       fetchClientsByEmployee(user?.id || '');
     }
+
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId: '1537044533755169',
+        cookie: true,
+        xfbml: true,
+        version: 'v19.0'
+      });
+
+      FB.AppEvents.logPageView();
+    };
+
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      // @ts-ignore
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      // @ts-ignore
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
   }, []);
 
   if (clientsByCompany.length > 0 || clientsByEmployee.length > 0) {

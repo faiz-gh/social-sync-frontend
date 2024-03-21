@@ -22,6 +22,21 @@ type Columns = {
   onChecked?: (id: string) => void;
 };
 
+const facebookLogin = () => {
+  window.FB.login(function(response: any) {
+    if (response.authResponse) {
+      console.log('Welcome!  Fetching your information.... ');
+      window.FB.api('/me', function(response: any) {
+        console.log('Good to see you, ' + response.name + '.');
+      });
+    } else {
+      console.log('User cancelled login or did not fully authorize.');
+    }
+  }, {
+    scope: 'pages_manage_posts'
+  });
+}
+
 export const getColumns = ({
   data,
   sortConfig,
@@ -125,37 +140,57 @@ export const getColumns = ({
             placement="top"
             color="invert"
           >
-            <ModalLink
-              view={<UpdateClientForm client={row} />}
-              customSize="900px"
+            <ActionIcon
+              as="span"
+              size="sm"
+              variant="outline"
+              className="hover:!border-gray-900 hover:text-gray-700"
             >
-              <ActionIcon
-                as="span"
-                size="sm"
-                variant="outline"
-                className="hover:!border-gray-900 hover:text-gray-700"
+              <ModalLink
+                view={<UpdateClientForm client={row} />}
+                customSize="900px"
               >
                 <PencilIcon className="h-4 w-4" />
-              </ActionIcon>
-            </ModalLink>
+              </ModalLink>
+            </ActionIcon>
           </Tooltip>
-          <Tooltip
-            size="sm"
-            content={'Create Post'}
-            placement="top"
-            color="invert"
-          >
-            <Link href={`/accounts/${row.id}`}>
-              <ActionIcon
-                as="span"
-                size="sm"
-                variant="outline"
-                className="hover:!border-gray-900 hover:text-gray-700"
-              >
-                <PiUserCircleGear className="h-4 w-4" />
-              </ActionIcon>
-            </Link>
-          </Tooltip>
+          {(parseInt(row.total_accounts) > 0) ?
+            <Tooltip
+              size="sm"
+              content={'Create Post'}
+              placement="top"
+              color="invert"
+            >
+              <Link href={`/posts/create-post`}>
+                <ActionIcon
+                  as="span"
+                  size="sm"
+                  variant="outline"
+                  className="hover:!border-gray-900 hover:text-gray-700"
+                >
+                  <PiUserCircleGear className="h-4 w-4" />
+                </ActionIcon>
+              </Link>
+            </Tooltip>
+          :
+            <Tooltip
+              size="sm"
+              content={'Connect Account'}
+              placement="top"
+              color="invert"
+            >
+              <Link href={"#"}>
+                <ActionIcon
+                  as="span"
+                  size="sm"
+                  variant="outline"
+                  className="hover:!border-gray-900 hover:text-gray-700"
+                >
+                  <PiUserList className="h-4 w-4" onClick={() => facebookLogin()} />
+                </ActionIcon>
+              </Link>
+            </Tooltip>
+          }
           <DeletePopover
             title={`Delete the client`}
             description={`Are you sure you want to delete this client with id #${row.id}?`}
