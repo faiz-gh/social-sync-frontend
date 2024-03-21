@@ -4,6 +4,6 @@ export enum LAYOUT_OPTIONS {
 
 export enum USER_ROLE {
   ADMIN = "1",
-  COMPANY = "2",
-  EMPLOYEE = "3"
+  COMPANY = "3",
+  EMPLOYEE = "2"
 }

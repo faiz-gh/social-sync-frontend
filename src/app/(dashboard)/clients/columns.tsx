@@ -8,7 +8,7 @@ import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
 import AddClientForm from './add-client-form';
 import ModalLink from '@/app/shared/modal-link';
-import { PiUserCircleGear, PiUserList } from 'react-icons/pi';
+import {PiFacebookLogoDuotone, PiUserCircleGear, PiUserList} from 'react-icons/pi';
 import { ClientType, IGetClientsByCompanyResponse } from '@/types';
 import UpdateClientForm from "@/app/(dashboard)/clients/update-client-form";
 
@@ -29,6 +29,9 @@ const facebookLogin = () => {
       console.log(JSON.stringify(response));
       window.FB.api('/me', function(response: any) {
         console.log('Good to see you, ' + response.name + '.');
+        console.log(JSON.stringify(response));
+      });
+      window.FB.api('/me/accounts', function(response: any) {
         console.log(JSON.stringify(response));
       });
     } else {
@@ -181,14 +184,14 @@ export const getColumns = ({
               placement="top"
               color="invert"
             >
-              <Link href={"#"}>
+              <Link href={"#"} onClick={() => facebookLogin()} >
                 <ActionIcon
                   as="span"
                   size="sm"
                   variant="outline"
                   className="hover:!border-gray-900 hover:text-gray-700"
                 >
-                  <PiUserList className="h-4 w-4" onClick={() => facebookLogin()} />
+                  <PiFacebookLogoDuotone className="h-4 w-4" />
                 </ActionIcon>
               </Link>
             </Tooltip>
