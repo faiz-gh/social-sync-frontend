@@ -34,7 +34,7 @@ export default function ProductSummary({ className }: { className?: string }) {
     >
       <Controller
         control={control}
-        name="Description"
+        name="description"
         render={({ field: { onChange, value } }) => (
           <QuillEditor
             value={value}
@@ -46,7 +46,7 @@ export default function ProductSummary({ className }: { className?: string }) {
         )}
       />
       <Controller
-        name="ScheduleDate"
+        name="postSchedule"
         control={control}
         render={({ field: { value, onChange } }) => (
           <DatePicker
@@ -67,7 +67,7 @@ export default function ProductSummary({ className }: { className?: string }) {
       <Input
         label="Location"
         placeholder="Post Location"
-        {...register('sku')}
+        {...register('location')}
         error={errors.sku?.message as string}
       />
     </FormGroup>

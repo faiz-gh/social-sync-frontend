@@ -1,5 +1,6 @@
 import { CreateProductInput } from '@/utils/validators/create-product.schema';
 import isEmpty from 'lodash/isEmpty';
+import {PostType} from "@/types";
 
 export const customFields = [
   {
@@ -20,47 +21,13 @@ export const productVariants = [
   },
 ];
 
-export function defaultValues(product?: CreateProductInput) {
+export function defaultValues(post?: PostType) {
   return {
-    title: product?.title ?? '',
-    sku: product?.sku ?? '',
-    type: product?.type ?? '',
-    categories: product?.categories ?? '',
-    description: product?.description ?? '',
-    price: product?.price ?? undefined,
-    costPrice: product?.costPrice ?? undefined,
-    retailPrice: product?.retailPrice ?? undefined,
-    salePrice: product?.salePrice ?? undefined,
-    inventoryTracking: product?.inventoryTracking ?? '',
-    currentStock: product?.currentStock ?? '',
-    lowStock: product?.lowStock ?? '',
-    productAvailability: product?.productAvailability ?? '',
-    productImages: product?.productImages ?? undefined,
-    tradeNumber: product?.tradeNumber ?? '',
-    manufacturerNumber: product?.manufacturerNumber ?? '',
-    brand: product?.brand ?? '',
-    upcEan: product?.upcEan ?? '',
-    customFields: isEmpty(product?.customFields)
-      ? customFields
-      : product?.customFields,
-
-    freeShipping: product?.freeShipping ?? false,
-    shippingPrice: product?.shippingPrice ?? undefined,
-    locationBasedShipping: product?.locationBasedShipping ?? false,
-    locationShipping: isEmpty(product?.locationShipping)
-      ? locationShipping
-      : product?.locationShipping,
-    pageTitle: product?.pageTitle ?? '',
-    metaDescription: product?.metaDescription ?? '',
-    metaKeywords: product?.metaKeywords ?? '',
-    productUrl: product?.productUrl ?? '',
-    isPurchaseSpecifyDate: product?.isPurchaseSpecifyDate ?? false,
-    isLimitDate: product?.isLimitDate ?? false,
-    dateFieldName: product?.dateFieldName ?? '',
-    productVariants: isEmpty(product?.productVariants)
-      ? productVariants
-      : product?.productVariants,
-    tags: product?.tags ?? [],
+    description: post?.description || '',
+    imageUrl: post?.image_url || '',
+    location: post?.location || '',
+    tags: post?.tags || [],
+    postSchedule: post?.post_schedule || Date.now()
   };
 }
 

@@ -26,13 +26,13 @@ export default function FormFooter({
         negMargin
       )}
     >
-      <Button
-        variant="outline"
-        className="w-full @xl:w-auto"
-        onClick={handleAltBtn}
-      >
-        {altBtnText}
-      </Button>
+      {/*<Button*/}
+      {/*  variant="outline"*/}
+      {/*  className="w-full @xl:w-auto"*/}
+      {/*  onClick={handleAltBtn}*/}
+      {/*>*/}
+      {/*  {altBtnText}*/}
+      {/*</Button>*/}
       <Button type="submit" isLoading={isLoading} className="w-full @xl:w-auto">
         {submitBtnText}
       </Button>

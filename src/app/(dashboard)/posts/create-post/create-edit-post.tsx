@@ -19,6 +19,7 @@ import {
     CreateProductInput,
     productFormSchema,
 } from '@/utils/validators/create-product.schema';
+import {PostType} from "@/types";
 
 const MAP_STEP_TO_COMPONENT = {
     [formParts.media]: ProductMedia,
@@ -30,25 +31,25 @@ const MAP_STEP_TO_COMPONENT = {
 interface IndexProps {
     slug?: string;
     className?: string;
-    product?: CreateProductInput;
+    post?: PostType;
 }
 
 export default function CreateEditPost({
     slug,
-    product,
+    post,
     className,
 }: IndexProps) {
     const [isLoading, setLoading] = useState(false);
-    const methods = useForm<any>({
-        resolver: zodResolver(productFormSchema),
-        defaultValues: defaultValues(product),
+    const methods = useForm<CreateProductInput>({
+        // resolver: zodResolver(productFormSchema),
+        defaultValues: defaultValues(post),
     });
 
-    const onSubmit: SubmitHandler<any> = (data) => {
+    const onSubmit: SubmitHandler<CreateProductInput> = (data) => {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-            console.log('product_data', data);
+            console.log('post_data', data);
             toast.success(
                 <Text as="b">Post successfully {slug ? 'updated' : 'created'}</Text>
             );

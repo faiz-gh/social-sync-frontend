@@ -15,7 +15,7 @@ export default function ProductTags({ className }: { className?: string }) {
       description="Add your post's tags here"
       className={cn(className)}
     >
-      <ItemCrud name="Tag" items={tags} setItems={setTags} />
+      <ItemCrud name="tags" items={tags} setItems={setTags} />
     </FormGroup>
   );
 }
