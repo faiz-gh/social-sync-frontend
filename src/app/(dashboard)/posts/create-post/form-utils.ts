@@ -27,7 +27,7 @@ export function defaultValues(post?: PostType) {
     imageUrl: post?.image_url || '',
     location: post?.location || '',
     tags: post?.tags || [],
-    postSchedule: post?.post_schedule || Date.now()
+    postSchedule: post?.post_schedule || new Date()
   };
 }
 
