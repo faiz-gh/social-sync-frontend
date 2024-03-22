@@ -83,7 +83,7 @@ export const getColumns = ({
       dataIndex: 'post_schedule',
       key: 'post_schedule',
       width: 200,
-      render: (post_schedule: Date) => <DateCell date={post_schedule} />,
+      render: (post_schedule: Date) => <DateCell date={new Date(post_schedule)} />,
     },
     {
       title: (
