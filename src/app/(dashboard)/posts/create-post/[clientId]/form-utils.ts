@@ -21,13 +21,13 @@ export const productVariants = [
   },
 ];
 
-export function defaultValues(post?: PostType) {
+export function defaultValues(post?: CreateProductInput) {
   return {
     description: post?.description || '',
-    imageUrl: post?.image_url || '',
+    imageUrl: post?.imageUrl,
     location: post?.location || '',
     tags: post?.tags || [],
-    postSchedule: post?.post_schedule || new Date()
+    postSchedule: post?.postSchedule || new Date()
   };
 }
 

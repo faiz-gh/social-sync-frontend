@@ -1,18 +1,12 @@
 'use client';
 
-import Link from 'next/link';
-import { Text, Tooltip, Checkbox, ActionIcon } from 'rizzui';
+import { Checkbox } from 'rizzui';
 import { HeaderCell } from '@/components/ui/table';
-import PencilIcon from '@/components/icons/pencil';
 import DateCell from '@/components/ui/date-cell';
-import DeletePopover from '@/app/shared/delete-popover';
-import ModalLink from '@/app/shared/modal-link';
-import { PiUserCircleGear, PiUserList } from 'react-icons/pi';
-import { ClientType, IGetClientsByCompanyResponse } from '@/types';
-import UpdateClientForm from "@/app/(dashboard)/clients/update-client-form";
+import {PostType} from '@/types';
 
 type Columns = {
-  data: ClientType[];
+  data: PostType[];
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];
@@ -55,45 +49,41 @@ export const getColumns = ({
       ),
     },
     {
-      title: <HeaderCell title="Name" />,
-      dataIndex: 'name',
-      key: 'name',
+      title: <HeaderCell title="Account Name" />,
+      dataIndex: 'account_name',
+      key: 'account_name',
       width: 250,
-      render: (name: string) => name.toString(),
+      render: (account_name: string) => account_name.toString(),
     },
     {
-      title: <HeaderCell title="Email" />,
-      dataIndex: 'email',
-      key: 'email',
+        title: <HeaderCell title="Facebook Post Id" />,
+      dataIndex: 'page_post_id',
+      key: 'page_post_id',
       width: 250,
-      render: (email: string) => email.toLowerCase(),
+      render: (page_post_id: string) => page_post_id.toLowerCase(),
     },
     {
-      title: <HeaderCell title="Employee Name" />,
-      dataIndex: 'employee_name',
-      key: 'employee_name',
+      title: <HeaderCell title="Location" />,
+      dataIndex: 'location',
+      key: 'location',
       width: 250,
-      render: (employee_name: string) => employee_name.toString(),
+      render: (location: string) => location.toString(),
     },
     {
       title: (
         <HeaderCell
-          title="Account Status"
+          title="Post Schedule"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'total_accounts'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'post_schedule'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('total_accounts'),
-      dataIndex: 'total_accounts',
-      key: 'total_accounts',
+      onHeaderCell: () => onHeaderCellClick('post_schedule'),
+      dataIndex: 'post_schedule',
+      key: 'post_schedule',
       width: 200,
-      render: (total_accounts: string) => (
-        <Text className="font-medium text-gray-700 dark:text-gray-600">
-          {(parseInt(total_accounts) > 0) ? 'Connected' : 'Not Connected'}
-        </Text>
-      ),
+      render: (post_schedule: Date) => <DateCell date={post_schedule} />,
     },
     {
       title: (
@@ -110,57 +100,5 @@ export const getColumns = ({
       key: 'created_date',
       width: 200,
       render: (created_date: Date) => <DateCell date={created_date} />,
-    },
-    {
-      title: <></>,
-      dataIndex: 'action',
-      key: 'action',
-      width: 140,
-      render: (_: string, row: any) => (
-        <div className="flex items-center justify-end gap-3 pe-3">
-          <Tooltip
-            size="sm"
-            content={'Edit Client'}
-            placement="top"
-            color="invert"
-          >
-            <ModalLink
-              view={<UpdateClientForm client={row} />}
-              customSize="900px"
-            >
-              <ActionIcon
-                as="span"
-                size="sm"
-                variant="outline"
-                className="hover:!border-gray-900 hover:text-gray-700"
-              >
-                <PencilIcon className="h-4 w-4" />
-              </ActionIcon>
-            </ModalLink>
-          </Tooltip>
-          <Tooltip
-            size="sm"
-            content={'Create Post'}
-            placement="top"
-            color="invert"
-          >
-            <Link href={`/accounts/${row.id}`}>
-              <ActionIcon
-                as="span"
-                size="sm"
-                variant="outline"
-                className="hover:!border-gray-900 hover:text-gray-700"
-              >
-                <PiUserCircleGear className="h-4 w-4" />
-              </ActionIcon>
-            </Link>
-          </Tooltip>
-          <DeletePopover
-            title={`Delete the client`}
-            description={`Are you sure you want to delete this client with id #${row.id}?`}
-            onDelete={() => onDeleteItem(row.id)}
-          />
-        </div>
-      ),
-    },
+    }
   ];

@@ -8,46 +8,41 @@ import ModalButton from '@/app/shared/modal-button';
 import AddClientForm from '../add-post-form';
 import useClient from "@/hooks/use-client";
 import {useEffect} from "react";
+import usePost from "@/hooks/use-post";
 
 const pageHeader = {
-  title: 'Clients',
+  title: 'Posts',
   breadcrumb: [
     {
       href: routes.sidebar.dashboard,
       name: 'Home',
     },
     {
-      href: routes.sidebar.clients,
-      name: 'Clients',
+      href: routes.sidebar.posts,
+      name: 'Posts',
     },
   ],
 };
 
-export default function ClientPage({ params }: { params: { clientId: string } }) {
-  const { clientsByEmployee, fetchClientsByEmployee } = useClient();
+export default function PostPage({ params }: { params: { clientId: string } }) {
+  const { postsByEmployee, fetchPostsByEmployee } = usePost();
 
   useEffect(() => {
-    fetchClientsByEmployee(params.clientId);
+    fetchPostsByEmployee(params.clientId);
   }, []);
 
-  if (clientsByEmployee.length > 0) {
+  if (postsByEmployee.length > 0) {
     return (
       <>
         <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
           <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-            <ExportButton data={clientsByEmployee} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
-            <ModalButton
-              label="Create Client"
-              view={<AddClientForm />}
-              customSize="900px"
-              className="mt-0 w-full @lg:w-auto"
-            />
+            <ExportButton data={postsByEmployee} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
           </div>
         </PageHeader>
         <div className="grid grid-cols-1 gap-6 3xl:gap-8">
           <BasicTableWidget
             variant="minimal"
-            data={clientsByEmployee}
+            data={postsByEmployee}
             // @ts-ignore
             getColumns={getColumns}
             enableSearch={false}
@@ -62,13 +57,7 @@ export default function ClientPage({ params }: { params: { clientId: string } })
       <>
         <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
           <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-            <ExportButton data={clientsByEmployee} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
-            <ModalButton
-              label="Create Client"
-              view={<AddClientForm />}
-              customSize="900px"
-              className="mt-0 w-full @lg:w-auto"
-            />
+            <ExportButton data={postsByEmployee} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
           </div>
         </PageHeader>
         <div className="grid grid-cols-1 gap-6 3xl:gap-8">

@@ -61,6 +61,8 @@ export type AccountType = {
 export type PostType = {
   id?: string;
   account_id?: string;
+  page_post_id?: string;
+  account_name?: string;
   image_url?: string;
   location?: string;
   description?: string;

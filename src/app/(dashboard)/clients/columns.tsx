@@ -183,7 +183,7 @@ export const getColumns = ({
               placement="top"
               color="invert"
             >
-              <Link href={`/posts/create-post`}>
+              <Link href={`/posts/create-post/${row.id}`}>
                 <ActionIcon
                   as="span"
                   size="sm"

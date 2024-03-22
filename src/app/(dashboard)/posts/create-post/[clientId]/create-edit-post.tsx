@@ -19,7 +19,9 @@ import {
     CreateProductInput,
     productFormSchema,
 } from '@/utils/validators/create-product.schema';
-import {PostType} from "@/types";
+import usePost from "@/hooks/use-post";
+import {getAccountsByClient} from "@/lib/apiRequests/account";
+import {IGetAccountsByClientResponse} from "@/types";
 
 const MAP_STEP_TO_COMPONENT = {
     [formParts.media]: ProductMedia,
@@ -31,30 +33,39 @@ const MAP_STEP_TO_COMPONENT = {
 interface IndexProps {
     slug?: string;
     className?: string;
-    post?: PostType;
+    post?: CreateProductInput;
 }
 
 export default function CreateEditPost({
     slug,
     post,
     className,
-}: IndexProps) {
+}: IndexProps, { params }: { params: { clientId: string } }) {
     const [isLoading, setLoading] = useState(false);
     const methods = useForm<CreateProductInput>({
-        // resolver: zodResolver(productFormSchema),
+        resolver: zodResolver(productFormSchema),
         defaultValues: defaultValues(post),
     });
+    const { createPost } = usePost();
 
     const onSubmit: SubmitHandler<CreateProductInput> = (data) => {
         setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            console.log('post_data', data);
-            toast.success(
-                <Text as="b">Post successfully {slug ? 'updated' : 'created'}</Text>
-            );
-            methods.reset();
-        }, 600);
+
+        getAccountsByClient({clientId: params.clientId}).then((response: IGetAccountsByClientResponse) => {
+            if (response.statusText === 'OK' && response.data.data){
+                const accountId = response.data.data[0].id || '';
+                createPost({
+                    accountId: accountId,
+                    description: data.description || '',
+                    image_url: data.imageUrl ? data.imageUrl[0].url : '',
+                    location: data.location || '',
+                    tags: data.tags || [],
+                    postSchedule: data.postSchedule || new Date()
+                }).then(() => { setLoading(false); });
+            } else {
+                toast.error(response.data.message)
+            }
+        });
     };
 
     return (
