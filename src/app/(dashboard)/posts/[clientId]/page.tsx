@@ -4,9 +4,6 @@ import { routes } from '@/config/routes';
 import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
 import ExportButton from '@/app/shared/export-button';
 import { getColumns } from '../columns';
-import ModalButton from '@/app/shared/modal-button';
-import AddClientForm from '../add-post-form';
-import useClient from "@/hooks/use-client";
 import {useEffect} from "react";
 import usePost from "@/hooks/use-post";
 
