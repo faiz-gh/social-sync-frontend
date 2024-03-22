@@ -60,7 +60,7 @@ export const getColumns = ({
       dataIndex: 'page_post_id',
       key: 'page_post_id',
       width: 250,
-      render: (page_post_id: string) => page_post_id.toLowerCase(),
+      render: (page_post_id: string) => page_post_id || 'N/A',
     },
     {
       title: <HeaderCell title="Location" />,
