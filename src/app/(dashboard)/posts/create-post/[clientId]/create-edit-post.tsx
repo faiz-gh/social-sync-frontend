@@ -34,13 +34,15 @@ interface IndexProps {
     slug?: string;
     className?: string;
     post?: CreateProductInput;
+    clientId: string;
 }
 
 export default function CreateEditPost({
     slug,
     post,
     className,
-}: IndexProps, { params }: { params: { clientId: string } }) {
+    clientId
+}: IndexProps) {
     const [isLoading, setLoading] = useState(false);
     const methods = useForm<CreateProductInput>({
         resolver: zodResolver(productFormSchema),
@@ -51,7 +53,7 @@ export default function CreateEditPost({
     const onSubmit: SubmitHandler<CreateProductInput> = (data) => {
         setLoading(true);
 
-        getAccountsByClient({clientId: params.clientId}).then((response: IGetAccountsByClientResponse) => {
+        getAccountsByClient({clientId: clientId}).then((response: IGetAccountsByClientResponse) => {
             if (response.statusText === 'OK' && response.data.data){
                 const accountId = response.data.data[0].id || '';
                 createPost({

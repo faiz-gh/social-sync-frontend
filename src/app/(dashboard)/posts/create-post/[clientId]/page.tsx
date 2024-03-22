@@ -28,12 +28,12 @@ const pageHeader = {
   ],
 };
 
-export default function ClientsPage() {
+export default function ClientsPage({ params }: { params: { clientId: string } }) {
   return (
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
 
-      <CreateEditPost />
+      <CreateEditPost clientId={params.clientId} />
     </>
   );
 }
