@@ -34,7 +34,7 @@ export default function ClientPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (userRole == USER_ROLE.COMPANY) {
+    if (userRole == USER_ROLE.EMPLOYEE) {
       const userStr = localStorage.getItem('user');
       const user: UserType = userStr ? JSON.parse(userStr) : null;
 
@@ -67,12 +67,12 @@ export default function ClientPage() {
     }(document, 'script', 'facebook-jssdk'));
   }, []);
 
-  if (clientsByCompany.length > 0 || clientsByEmployee.length > 0) {
+  if (userRole === USER_ROLE.COMPANY && clientsByCompany.length > 0) {
     return (
       <>
         <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
           <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-            <ExportButton data={(userRole == USER_ROLE.COMPANY) ? clientsByCompany : clientsByEmployee} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
+            <ExportButton data={clientsByCompany} fileName='fileName' header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At" />
             <ModalButton
               label="Create Client"
               view={<AddClientForm />}
@@ -84,7 +84,35 @@ export default function ClientPage() {
         <div className="grid grid-cols-1 gap-6 3xl:gap-8">
           <BasicTableWidget
             variant="minimal"
-            data={(userRole == USER_ROLE.COMPANY) ? clientsByCompany : clientsByEmployee}
+            data={clientsByCompany}
+            // @ts-ignore
+            getColumns={getColumns}
+            enableSearch={false}
+            enablePagination={true}
+            pageSize={7}
+          />
+        </div>
+      </>
+    );
+  } else if (userRole === USER_ROLE.EMPLOYEE && clientsByEmployee.length > 0) {
+    return (
+      <>
+        <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
+          <div className="mt-4 flex items-center gap-3 @lg:mt-0">
+            <ExportButton data={clientsByEmployee} fileName='fileName'
+                          header="Order ID,Name,Email,Avatar,Items,Price,Status,Created At,Updated At"/>
+            <ModalButton
+              label="Create Client"
+              view={<AddClientForm/>}
+              customSize="900px"
+              className="mt-0 w-full @lg:w-auto"
+            />
+          </div>
+        </PageHeader>
+        <div className="grid grid-cols-1 gap-6 3xl:gap-8">
+          <BasicTableWidget
+            variant="minimal"
+            data={clientsByEmployee}
             // @ts-ignore
             getColumns={getColumns}
             enableSearch={false}

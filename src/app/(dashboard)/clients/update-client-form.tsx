@@ -1,18 +1,18 @@
 'use client';
 
-import { PiXBold } from 'react-icons/pi';
-import { SubmitHandler, Controller } from 'react-hook-form';
-import {ActionIcon, Button, Input, Select, SelectOption, Text, Textarea, Title} from 'rizzui';
+import {PiXBold} from 'react-icons/pi';
+import {Controller, SubmitHandler} from 'react-hook-form';
+import {ActionIcon, Button, Input, Select, SelectOption, Title} from 'rizzui';
 import cn from '@/utils/class-names';
-import { useModal } from '@/app/shared/modal-views/use-modal';
-import { Form } from '@/components/ui/form';
-import toast from 'react-hot-toast';
-import {ClientType, ICreateClientRequest, IUpdateClientRequest, UserType} from '@/types';
-import {useRouter} from "next/navigation";
-import {createClient, updateClient} from "@/lib/apiRequests/client";
+import {useModal} from '@/app/shared/modal-views/use-modal';
+import {Form} from '@/components/ui/form';
+import {ClientType, UserType} from '@/types';
 import {useEffect, useState} from "react";
 import useEmployee from "@/hooks/use-employee";
 import useClient from "@/hooks/use-client";
+import useUserRole from "@/hooks/use-user-role";
+import {USER_ROLE} from "@/config/enums";
+import {useLocalStorage} from "react-use";
 
 interface ClientFormInput {
   id?: string;
@@ -26,19 +26,30 @@ export default function UpdateClientForm({ client }: { client: ClientType }) {
   const { closeModal } = useModal();
   const { employees } = useEmployee();
   const { updateClient, fetchClientsByEmployee } = useClient();
+  const { userRole } = useUserRole();
+  const user = useLocalStorage('user')[0] as UserType;
 
   const [employeeList, setEmployeeList] = useState<SelectOption[]>([]);
 
   useEffect(() => {
-    employees.map((employee) => {
-      setEmployeeList((prev) => [
-        ...prev,
+    if (userRole == USER_ROLE.EMPLOYEE) {
+      setEmployeeList([
         {
-          label: `${employee.first_name} ${employee.last_name}`,
-          value: employee?.id || ''
+          label: `${user?.first_name} ${user?.last_name}`,
+          value: user?.id || ''
         }
       ]);
-    })
+    } else {
+      employees.map((employee) => {
+        setEmployeeList((prev) => [
+          ...prev,
+          {
+            label: `${employee.first_name} ${employee.last_name}`,
+            value: employee?.id || ''
+          }
+        ]);
+      });
+    }
   }, [employees]);
 
   const initialValues = {

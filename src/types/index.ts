@@ -47,8 +47,11 @@ export type ClientType = {
 export type AccountType = {
   id?: string;
   client_id?: string;
-  account_type?: string;
-  access_token?: string;
+  facebook_user_id?: string;
+  page_id?: string;
+  page_name?: string;
+  user_access_token?: string;
+  page_access_token?: string;
   created_date?: Date;
   last_modified?: Date;
   is_deleted?: boolean;
@@ -271,6 +274,18 @@ export interface IGetPostsByClientResponse extends AxiosResponse {
   };
 }
 
+export interface IGetPostsByEmployeeResponse extends AxiosResponse {
+  data: DefaultResponseType & {
+    data?: PostType[];
+  };
+}
+
+export interface IGetPostsByCompanyResponse extends AxiosResponse {
+  data: DefaultResponseType & {
+    data?: PostType[];
+  };
+}
+
 // Event Response
 export interface ICreateEventResponse extends AxiosResponse {
   data: DefaultResponseType & {
@@ -404,9 +419,11 @@ export interface IGetClientsByEmployeeRequest {
 
 // Account Service
 export interface ICreateAccountRequest {
-  clientId: string;
-  accountType: string;
-  accessToken: string;
+  clientId?: string;
+  accessToken?: string;
+  facebookUserId?: string;
+  pageId?: string;
+  pageName?: string;
 }
 
 export interface IUpdateAccountRequest {
@@ -460,6 +477,14 @@ export interface IGetPostsByAccountRequest {
 
 export interface IGetPostsByClientRequest {
   clientId: string;
+}
+
+export interface IGetPostsByEmployeeRequest {
+  employeeId: string;
+}
+
+export interface IGetPostsByCompanyRequest {
+  companyId: string;
 }
 
 // Event Service

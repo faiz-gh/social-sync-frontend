@@ -9,6 +9,10 @@ import { Form } from '@/components/ui/form';
 import {useEffect, useState} from "react";
 import useEmployee from "@/hooks/use-employee";
 import useClient from "@/hooks/use-client";
+import {USER_ROLE} from "@/config/enums";
+import useUserRole from "@/hooks/use-user-role";
+import {useLocalStorage} from "react-use";
+import {UserType} from "@/types";
 
 interface ClientFormInput {
     name?: string;
@@ -17,23 +21,34 @@ interface ClientFormInput {
     employeeId?: string;
 }
 
-export default function UpdateClientForm() {
+export default function AddClientForm() {
     const { closeModal } = useModal();
     const { employees } = useEmployee();
     const { createClient, fetchClientsByEmployee } = useClient();
+    const { userRole } = useUserRole();
+    const user = useLocalStorage('user')[0] as UserType;
 
     const [employeeList, setEmployeeList] = useState<SelectOption[]>([]);
 
     useEffect(() => {
-        employees.map((employee) => {
-            setEmployeeList((prev) => [
-                ...prev,
+        if (userRole == USER_ROLE.EMPLOYEE) {
+            setEmployeeList([
                 {
-                    label: `${employee.first_name} ${employee.last_name}`,
-                    value: employee?.id || ''
+                    label: `${user?.first_name} ${user?.last_name}`,
+                    value: user?.id || ''
                 }
             ]);
-        })
+        } else {
+            employees.map((employee) => {
+                setEmployeeList((prev) => [
+                    ...prev,
+                    {
+                        label: `${employee.first_name} ${employee.last_name}`,
+                        value: employee?.id || ''
+                    }
+                ]);
+            });
+        }
     }, [employees]);
 
     const onSubmit: SubmitHandler<ClientFormInput> = async (data) => {
@@ -79,27 +94,27 @@ export default function UpdateClientForm() {
                           {...register('email')}
                           className="col-span-full"
                         />
-                            <Controller
-                              name="employeeId"
-                              control={control}
-                              render={({field: {name, onChange, value}}) => (
-                                <Select
-                                  options={employeeList}
-                                  value={value}
-                                  onChange={onChange}
-                                  name={name}
-                                  label="Employee"
-                                  className="col-span-full"
-                                  getOptionValue={(option) => option.value}
-                                  displayValue={(selected: string) =>
-                                    employeeList.find((option) => option.value === selected)?.label ??
-                                    selected
-                                  }
-                                  dropdownClassName="!z-[1]"
-                                  inPortal={false}
-                                />
-                              )}
+                        <Controller
+                          name="employeeId"
+                          control={control}
+                          render={({field: {name, onChange, value}}) => (
+                            <Select
+                              options={employeeList}
+                              value={value}
+                              onChange={onChange}
+                              name={name}
+                              label="Employee"
+                              className="col-span-full"
+                              getOptionValue={(option) => option.value}
+                              displayValue={(selected: string) =>
+                                employeeList.find((option) => option.value === selected)?.label ??
+                                selected
+                              }
+                              dropdownClassName="!z-[1]"
+                              inPortal={false}
                             />
+                          )}
+                        />
 
                         <div className={cn('col-span-full grid grid-cols-2 gap-4 pt-5')}>
                             <Button

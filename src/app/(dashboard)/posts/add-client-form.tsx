@@ -17,7 +17,7 @@ interface ClientFormInput {
     employeeId?: string;
 }
 
-export default function UpdateClientForm() {
+export default function AddPostForm() {
     const { closeModal } = useModal();
     const { employees } = useEmployee();
     const { createClient, fetchClientsByEmployee } = useClient();

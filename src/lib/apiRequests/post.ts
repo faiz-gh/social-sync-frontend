@@ -1,6 +1,12 @@
 import { AxiosResponse } from "axios";
 import axios from "@/lib/axios";
-import { ICreatePostRequest, IGetPostRequest, IGetPostsByAccountRequest, IGetPostsByClientRequest } from "@/types";
+import {
+    ICreatePostRequest,
+    IGetPostRequest,
+    IGetPostsByAccountRequest,
+    IGetPostsByClientRequest, IGetPostsByCompanyRequest,
+    IGetPostsByEmployeeRequest
+} from "@/types";
 
 export async function createPost(payload: ICreatePostRequest): Promise<AxiosResponse> {
     return await axios.post('/post', payload, {
@@ -22,6 +28,18 @@ export async function getPostsByAccount(payload: IGetPostsByAccountRequest): Pro
 
 export async function getPostsByClient(payload: IGetPostsByClientRequest): Promise<AxiosResponse> {
     return await axios.get('/post/client/' + payload.clientId, {
+        validateStatus: () => true
+    });
+}
+
+export async function getPostsByEmployee(payload: IGetPostsByEmployeeRequest): Promise<AxiosResponse> {
+    return await axios.get('/post/employee/' + payload.employeeId, {
+        validateStatus: () => true
+    });
+}
+
+export async function getPostsByCompany(payload: IGetPostsByCompanyRequest): Promise<AxiosResponse> {
+    return await axios.get('/post/company/' + payload.companyId, {
         validateStatus: () => true
     });
 }

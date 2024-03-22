@@ -9,8 +9,10 @@ import DeletePopover from '@/app/shared/delete-popover';
 import AddClientForm from './add-client-form';
 import ModalLink from '@/app/shared/modal-link';
 import {PiFacebookLogoDuotone, PiUserCircleGear, PiUserList} from 'react-icons/pi';
-import { ClientType, IGetClientsByCompanyResponse } from '@/types';
+import {ClientType, ICreateAccountRequest, ICreateAccountResponse, IGetClientsByCompanyResponse} from '@/types';
 import UpdateClientForm from "@/app/(dashboard)/clients/update-client-form";
+import {createAccount} from "@/lib/apiRequests/account";
+import toast from "react-hot-toast";
 
 type Columns = {
   data: ClientType[];
@@ -22,9 +24,14 @@ type Columns = {
   onChecked?: (id: string) => void;
 };
 
-const facebookLogin = () => {
+const facebookLogin = (clientId: string) => {
+  const payload: ICreateAccountRequest = {
+    clientId: clientId
+  }
   window.FB.login(function(response: any) {
     if (response.authResponse) {
+      payload.facebookUserId = response.authResponse.userID;
+      payload.accessToken = response.authResponse.accessToken;
       console.log('Welcome!  Fetching your information.... ');
       console.log(JSON.stringify(response));
       window.FB.api('/me', function(response: any) {
@@ -33,9 +40,19 @@ const facebookLogin = () => {
       });
       window.FB.api('/me/accounts', function(response: any) {
         console.log(JSON.stringify(response));
+        payload.pageId = response.data[0].id;
+        payload.pageName = response.data[0].name;
+
+        createAccount(payload).then((response: ICreateAccountResponse) => {
+          if (response.statusText === 'OK' && response.data){
+            toast.success(response.data.message);
+          } else {
+            toast.error(response.data.message);
+          }
+        });
       });
     } else {
-      console.log('User cancelled login or did not fully authorize.');
+      toast.error('User cancelled login or did not fully authorize.');
     }
   }, {
     scope: 'pages_manage_posts'
@@ -184,7 +201,7 @@ export const getColumns = ({
               placement="top"
               color="invert"
             >
-              <Link href={"#"} onClick={() => facebookLogin()} >
+              <Link href={"#"} onClick={() => facebookLogin(row.id)} >
                 <ActionIcon
                   as="span"
                   size="sm"

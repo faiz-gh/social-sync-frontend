@@ -22,7 +22,7 @@ const pageHeader = {
   ],
 };
 
-export default function ClientPage() {
+export default function PostPage() {
   const { clientsByCompany } = useClient();
 
   if (clientsByCompany.length > 0) {
