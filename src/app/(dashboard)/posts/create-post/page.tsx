@@ -4,7 +4,7 @@ import { metaObject } from '@/config/site.config';
 import CreateEditPost from './create-edit-post';
 
 export const metadata = {
-  ...metaObject('Posts'),
+  ...metaObject('Create Post'),
 };
 
 const pageHeader = {
@@ -17,6 +17,10 @@ const pageHeader = {
     {
       href: routes.sidebar.clients,
       name: 'Clients',
+    },
+    {
+      href: routes.sidebar.posts,
+      name: 'Posts',
     },
     {
       name: 'Create Post',

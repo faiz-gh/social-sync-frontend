@@ -61,7 +61,7 @@ export type AccountType = {
 export type PostType = {
   id?: string;
   account_id?: string;
-  media?: string[];
+  image_url?: string;
   location?: string;
   description?: string;
   tags?: string[];
@@ -249,40 +249,49 @@ export interface IGetAccountsByClientResponse extends AxiosResponse {
 // Post Response
 export interface ICreatePostResponse extends AxiosResponse {
   data: DefaultResponseType & {
-    data?: {
-      post: PostType,
-      postResponse: unknown
-    }
+    data?: PostType & {
+      account_name: string;
+    };
   };
 }
 
 export interface IGetPostResponse extends AxiosResponse {
   data: DefaultResponseType & {
-    data?: PostType;
+    data?: PostType & {
+      account_name: string;
+    };
   };
 }
 
 export interface IGetPostsByAccountResponse extends AxiosResponse {
   data: DefaultResponseType & {
-    data?: PostType[];
+    data?: PostType & {
+      account_name: string;
+    }[];
   };
 }
 
 export interface IGetPostsByClientResponse extends AxiosResponse {
   data: DefaultResponseType & {
-    data?: PostType[];
+    data?: PostType & {
+      account_name: string;
+    }[];
   };
 }
 
 export interface IGetPostsByEmployeeResponse extends AxiosResponse {
   data: DefaultResponseType & {
-    data?: PostType[];
+    data?: PostType & {
+      account_name: string;
+    }[];
   };
 }
 
 export interface IGetPostsByCompanyResponse extends AxiosResponse {
   data: DefaultResponseType & {
-    data?: PostType[];
+    data?: PostType & {
+      account_name: string;
+    }[];
   };
 }
 
@@ -447,20 +456,20 @@ export interface IGetAccountsByClientRequest {
 // Post Service
 export interface ICreatePostRequest {
   accountId: string;
-  media?: string[];
-  location?: string;
   description: string;
+  image_url?: string;
+  location?: string;
   tags?: string[];
   postSchedule?: Date;
 }
 
 export interface IUpdatePostRequest {
   id: string;
-  media: string[];
-  location: string;
   description: string;
-  tags: string[];
-  postSchedule: Date;
+  image_url?: string;
+  location?: string;
+  tags?: string[];
+  postSchedule?: Date;
 }
 
 export interface IDeletePostRequest {

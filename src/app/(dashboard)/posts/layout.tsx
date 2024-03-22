@@ -5,7 +5,7 @@ type LayoutProps = {
 };
 
 export const metadata = {
-  ...metaObject('Clients'),
+  ...metaObject('Posts'),
 };
 
 export default function ClientLayout({ children }: LayoutProps) {

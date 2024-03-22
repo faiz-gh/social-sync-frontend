@@ -6,7 +6,6 @@ import { HeaderCell } from '@/components/ui/table';
 import PencilIcon from '@/components/icons/pencil';
 import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
-import AddClientForm from './add-client-form';
 import ModalLink from '@/app/shared/modal-link';
 import { PiUserCircleGear, PiUserList } from 'react-icons/pi';
 import { ClientType, IGetClientsByCompanyResponse } from '@/types';

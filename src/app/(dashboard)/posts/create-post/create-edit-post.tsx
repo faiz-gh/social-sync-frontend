@@ -39,12 +39,12 @@ export default function CreateEditPost({
     className,
 }: IndexProps) {
     const [isLoading, setLoading] = useState(false);
-    const methods = useForm<CreateProductInput>({
+    const methods = useForm<any>({
         resolver: zodResolver(productFormSchema),
         defaultValues: defaultValues(product),
     });
 
-    const onSubmit: SubmitHandler<CreateProductInput> = (data) => {
+    const onSubmit: SubmitHandler<any> = (data) => {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
